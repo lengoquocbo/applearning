@@ -1,4 +1,8 @@
 package com.example.apphoctap.model
 
-class Teacher {
-}
+data class Teacher(
+    val teacherID:String,
+    val userID: User,
+    val name:String,
+    val birthday:String
+)
