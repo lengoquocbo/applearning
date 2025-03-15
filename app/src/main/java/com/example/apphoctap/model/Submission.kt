@@ -1,5 +1,9 @@
 package com.example.apphoctap.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Submission(
     val submisID: Int,
     val studentID: Student,
@@ -8,4 +12,4 @@ data class Submission(
     val score: Int,
     val submisAt: String,
     val feedBack: String
-)
+): Parcelable

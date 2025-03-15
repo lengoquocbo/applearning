@@ -1,8 +1,12 @@
 package com.example.apphoctap.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Student (
     val studentID:String,
     val userID: User,
     val name:String,
     val birthday:String
-)
+) : Parcelable
