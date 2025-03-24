@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Message (
     val messageID:Int,
-    val userID: User,
+    val userID: String,
     val classID: Classes,
     val content:String,
     val senAt: String

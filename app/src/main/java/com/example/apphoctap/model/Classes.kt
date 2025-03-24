@@ -1,11 +1,14 @@
 package com.example.apphoctap.model
 
-    import android.os.Parcelable
-    import kotlinx.parcelize.Parcelize
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
-    @Parcelize
-    data class Classes(
-        val classID:String,
-        val teacherID: Teacher,
-        val className:String
-    ) : Parcelable
+@Parcelize
+@Entity(tableName = "classes")
+data class Classes(
+    @PrimaryKey val classID:String,
+    val teacherID: String,
+    val className: String
+) : Parcelable

@@ -1,4 +1,4 @@
 package com.example.apphoctap.repository
 
-class ChatRepository {
+class MessageRepository {
 }
