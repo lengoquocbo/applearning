@@ -1,6 +1,7 @@
-package com.example.apphoctap.network
+package com.example.apphoctap.di
 
 import android.content.Context
+import com.example.apphoctap.network.AuthInterceptor
 import com.example.apphoctap.network.api.AssignmentApi
 import com.example.apphoctap.network.api.AuthApi
 import com.example.apphoctap.network.api.ClassStudentApi
@@ -83,100 +84,20 @@ object NetworkModule {
 
 
     //Các hàm cung cấp API service từ Retrofit
-    @Provides
-    @Singleton
-    fun provideUserApiService(retrofit: Retrofit): UserApi {
-        return retrofit.create(UserApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAssignmentApiService(retrofit: Retrofit) : AssignmentApi{
-        return retrofit.create(AssignmentApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAuthApiService(retrofit: Retrofit): AuthApi {
-        return retrofit.create(AuthApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideClassesApiService(retrofit: Retrofit) : ClassesApi {
-        return retrofit.create(ClassesApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideClassStudentApiService(retrofit: Retrofit): ClassStudentApi {
-        return retrofit.create(ClassStudentApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideFlashCardApiService(retrofit: Retrofit) : FlashCardApi {
-        return retrofit.create(FlashCardApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMessageApiService(retrofit: Retrofit) : MessageApi {
-        return retrofit.create(MessageApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMinitestAnswerApiService(retrofit: Retrofit) : MinitestAnswerApi {
-        return retrofit.create(MinitestAnswerApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMiniTestApiService(retrofit: Retrofit) : MinitestApi {
-        return retrofit.create(MinitestApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMinitestQuestionApiService(retrofit: Retrofit) : MinitestQuestionApi {
-        return retrofit.create(MinitestQuestionApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMinitestResultApiService(retrofit: Retrofit) : MinitestResultApi {
-        return retrofit.create(MinitestResultApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideStudentAnswerApiService(retrofit: Retrofit) : StudentAnswerApi {
-        return retrofit.create(StudentAnswerApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideStudentApiService(retrofit: Retrofit) : StudentApi {
-        return retrofit.create(StudentApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTeacherApiService(retrofit: Retrofit) : TeacherApi {
-        return retrofit.create(TeacherApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSubmissionApiService(retrofit: Retrofit) : SubmissionApi {
-        return retrofit.create(SubmissionApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideVideoCallApiService(retrofit: Retrofit) : VideoCallApi {
-        return retrofit.create(VideoCallApi::class.java)
-    }
-
+    @Provides @Singleton fun provideUserApiService(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
+    @Provides @Singleton fun provideAssignmentApiService(retrofit: Retrofit) : AssignmentApi = retrofit.create(AssignmentApi::class.java)
+    @Provides @Singleton fun provideAuthApiService(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+    @Provides @Singleton fun provideClassesApiService(retrofit: Retrofit) : ClassesApi = retrofit.create(ClassesApi::class.java)
+    @Provides @Singleton fun provideClassStudentApiService(retrofit: Retrofit): ClassStudentApi = retrofit.create(ClassStudentApi::class.java)
+    @Provides @Singleton fun provideFlashCardApiService(retrofit: Retrofit) : FlashCardApi = retrofit.create(FlashCardApi::class.java)
+    @Provides @Singleton fun provideMessageApiService(retrofit: Retrofit) : MessageApi = retrofit.create(MessageApi::class.java)
+    @Provides @Singleton fun provideMinitestAnswerApiService(retrofit: Retrofit) : MinitestAnswerApi = retrofit.create(MinitestAnswerApi::class.java)
+    @Provides @Singleton fun provideMiniTestApiService(retrofit: Retrofit) : MinitestApi = retrofit.create(MinitestApi::class.java)
+    @Provides @Singleton fun provideMinitestQuestionApiService(retrofit: Retrofit) : MinitestQuestionApi = retrofit.create(MinitestQuestionApi::class.java)
+    @Provides @Singleton fun provideMinitestResultApiService(retrofit: Retrofit) : MinitestResultApi = retrofit.create(MinitestResultApi::class.java)
+    @Provides @Singleton fun provideStudentAnswerApiService(retrofit: Retrofit) : StudentAnswerApi = retrofit.create(StudentAnswerApi::class.java)
+    @Provides @Singleton fun provideStudentApiService(retrofit: Retrofit) : StudentApi = retrofit.create(StudentApi::class.java)
+    @Provides @Singleton fun provideTeacherApiService(retrofit: Retrofit) : TeacherApi = retrofit.create(TeacherApi::class.java)
+    @Provides @Singleton fun provideSubmissionApiService(retrofit: Retrofit) : SubmissionApi = retrofit.create(SubmissionApi::class.java)
+    @Provides @Singleton fun provideVideoCallApiService(retrofit: Retrofit) : VideoCallApi = retrofit.create(VideoCallApi::class.java)
 }

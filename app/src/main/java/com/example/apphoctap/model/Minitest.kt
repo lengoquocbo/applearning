@@ -1,10 +1,8 @@
 package com.example.apphoctap.model
 
-import java.time.LocalDateTime
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -21,9 +19,9 @@ import kotlinx.parcelize.Parcelize
     ]
 )
 data class Minitest(
-    @PrimaryKey val minitestsID: Int,
-    val assignmentId: Int,
+    val minitestID: Int,
+    val assignmentID: Int,
     val title: String,
     val duration: Int,
-    val createdAt: LocalDateTime
+    val createdAt: String
 ) : Parcelable

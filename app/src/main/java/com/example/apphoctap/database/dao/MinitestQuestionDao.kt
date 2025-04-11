@@ -11,6 +11,6 @@ interface MinitestQuestionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQuestion(question: MinitestQuestion)
 
-    @Query("SELECT * FROM minitestquestion WHERE minitestsID = :minitestId")
+    @Query("SELECT * FROM minitestquestion WHERE minitestID = :minitestId")
     suspend fun getQuestionsByMinitest(minitestId: String): List<MinitestQuestion>
 }

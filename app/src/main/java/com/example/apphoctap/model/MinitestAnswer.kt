@@ -8,20 +8,20 @@ import androidx.room.ForeignKey
 
 @Entity (
     tableName = "minitestAnswer",
-    primaryKeys = ["answerId"],
+    primaryKeys = ["answerID"],
     foreignKeys = [
         ForeignKey(
             entity = MinitestQuestion::class,
-            parentColumns = ["questionId"],
-            childColumns = ["questionId"],
+            parentColumns = ["questionID"],
+            childColumns = ["questionID"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 @Parcelize
 data class MinitestAnswer(
-    val answerId : Int,
-    val questionId : Int,
+    val answerID : Int,
+    val questionID : Int,
     val answerText : String,
     val isCorrect : Boolean
 ) : Parcelable

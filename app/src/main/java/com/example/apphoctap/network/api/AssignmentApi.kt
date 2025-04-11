@@ -8,14 +8,15 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface AssignmentApi {
 
     @GET("assignments")
     suspend fun getAllAssingment() : List<Assignment>
 
-    @GET("assignments/{id}")
-    suspend fun getAssignmentByClassId(@Path("id") assignmentId : String) : Response<List<Assignment>>
+    @GET("assignments")
+    suspend fun getAssignmentByClassId(@Query("classId") ClassId : String) : Response<List<Assignment>>
 
     @POST("assignments")
     suspend fun createAssignment(@Body assignment: Assignment) : Response<Assignment>

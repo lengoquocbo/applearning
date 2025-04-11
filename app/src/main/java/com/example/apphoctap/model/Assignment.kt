@@ -6,13 +6,13 @@ import kotlinx.parcelize.Parcelize
 
 
 @Entity(
-    tableName = "assignment",
+    tableName = "Assignment",
     primaryKeys = ["assignmentID"],
     foreignKeys = [
         ForeignKey(
             entity = Classes::class,
             parentColumns = ["classID"],
-            childColumns = ["clasID"],
+            childColumns = ["classID"],
             onDelete = ForeignKey.CASCADE
         )
     ]

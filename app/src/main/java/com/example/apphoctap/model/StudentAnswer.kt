@@ -8,34 +8,34 @@ import androidx.room.Index
 
 @Entity(
     tableName = "studentAnswer",
-    indices = [ Index(value = ["resultId"]),
-                Index(value = ["questionId"]),
-                Index(value = ["answerId"]),
-                Index(value = ["selectedAnswerId"])],
-    primaryKeys = ["studentAnswerId"],
+    indices = [ Index(value = ["resultID"]),
+                Index(value = ["questionID"]),
+                Index(value = ["answerID"]),
+                Index(value = ["selectedAnswerID"])],
+    primaryKeys = ["studentAnswerID"],
     foreignKeys = [
         ForeignKey(
             entity = MinitestResult::class,
-            parentColumns = ["resultId"],
-            childColumns = ["resultId"],
+            parentColumns = ["resultID"],
+            childColumns = ["resultID"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = MinitestQuestion::class,
-            parentColumns = ["questionId"],
-            childColumns = ["questionId"],
+            parentColumns = ["questionID"],
+            childColumns = ["questionID"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = MinitestAnswer::class,
-            parentColumns = ["answerId"],
-            childColumns = ["answerId"],
+            parentColumns = ["answerID"],
+            childColumns = ["answerID"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = MinitestAnswer::class,
-            parentColumns = ["answerId"],
-            childColumns = ["selectedAnswerId"],
+            parentColumns = ["answerID"],
+            childColumns = ["selectedAnswerID"],
             onDelete = ForeignKey.SET_NULL
         )
     ]
@@ -43,9 +43,9 @@ import androidx.room.Index
 )
 @Parcelize
 data class StudentAnswer(
-    val studentAnswerId : Int,
-    val resultId : Int,
-    val questionId : Int,
-    val answerId: Int?,
-    val selectedAnswerId : String?
+    val studentAnswerID : Int,
+    val resultID : Int,
+    val questionID : Int,
+    val answerID: Int?,
+    val selectedAnswerID : String?
 ) : Parcelable

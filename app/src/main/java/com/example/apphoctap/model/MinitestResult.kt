@@ -8,7 +8,7 @@ import androidx.room.ForeignKey
 
 @Entity (
     tableName = "minitestResult",
-    primaryKeys = ["resultId"],
+    primaryKeys = ["resultID"],
     foreignKeys = [
         ForeignKey(
             entity = Minitest::class,
@@ -26,8 +26,8 @@ import androidx.room.ForeignKey
 )
 @Parcelize
 data class MinitestResult(
-    val resultId : Int,
-    val minitestId : Int,
-    val studentId : Int,
-    val submittedAt : LocalDateTime
+    val resultID : Int,
+    val minitestID : Int,
+    val studentID : Int,
+    val submittedAt : String
 ) : Parcelable

@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Teacher(
     @PrimaryKey val teacherID:String,
-    val userID: User,
+    val userID: String,
     val name:String,
     val birthday:String
 ): Parcelable

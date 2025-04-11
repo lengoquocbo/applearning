@@ -1,6 +1,5 @@
 package com.example.apphoctap.model
 
-import java.time.LocalDateTime
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -8,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Entity(
     tableName = "minitestQuestion",
-    primaryKeys = ["questionId"],
+    primaryKeys = ["questionID"],
     foreignKeys = [
         ForeignKey(
             entity = Minitest::class,
@@ -20,8 +19,8 @@ import kotlinx.parcelize.Parcelize
 )
 @Parcelize
 data class MinitestQuestion(
-    val questionId : Int,
-    val minitestsId : Int,
+    val questionID : Int,
+    val minitestID : Int,
     val question : String,
-    val createdAt : LocalDateTime
+    val createdAt : String
 ) : Parcelable

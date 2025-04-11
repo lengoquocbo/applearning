@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(
     tableName = "submission",
-    primaryKeys = ["submisID"],
+    primaryKeys = ["submitID"],
     foreignKeys = [
         ForeignKey(
             entity = Assignment::class,

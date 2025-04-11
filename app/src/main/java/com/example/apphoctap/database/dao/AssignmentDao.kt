@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.apphoctap.model.Assignment
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AssignmentDao {
@@ -20,6 +21,9 @@ interface AssignmentDao {
     suspend fun deleteAssignment(Assignment : Assignment)
 
     @Query("SELECT * FROM assignment WHERE classID = :classId")
-    suspend fun getAssignmentsByClass(classId: String): List<Assignment>
+    fun getAssignmentsByClass(classId: String): Flow<List<Assignment>>
+
+    @Query("SELECT * FROM assignment WHERE assignmentID = :assignmentId")
+    suspend fun getAssignmentById(assignmentId: Int): Assignment?
 
 }
