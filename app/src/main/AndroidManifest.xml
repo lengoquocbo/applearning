@@ -16,7 +16,6 @@
         <activity
             android:name=".view.MainActivity"
             android:exported="false"
-            android:label="@string/title_activity_student"
             android:theme="@style/Theme.Apphoctap.NoActionBar" />
         <activity
             android:name=".view.student.StudentActivity"

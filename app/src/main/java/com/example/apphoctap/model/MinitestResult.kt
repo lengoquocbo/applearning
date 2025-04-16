@@ -26,8 +26,14 @@ import androidx.room.ForeignKey
 )
 @Parcelize
 data class MinitestResult(
+<<<<<<< Updated upstream
     val resultID : Int,
     val minitestID : Int,
     val studentID : Int,
+=======
+    val resultId : Int,
+    val minitestId : Int,
+    val studentId : Int,
+>>>>>>> Stashed changes
     val submittedAt : String
 ) : Parcelable

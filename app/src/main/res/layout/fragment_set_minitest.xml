@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_card_white">
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TẠO BÀI KIỂM TRA"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Tên bài kiểm tra -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiêu đề + chú ý"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/editTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập tiêu đề bài kiểm tra"
+            android:background="@drawable/bg_input"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Điểm tối đa -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Điểm tối đa"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/edtDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Thời gian làm"
+            android:background="@drawable/bg_input"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Hạn nộp -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hạn nộp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/editDeadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chọn hạn nộp"
+            android:focusable="false"
+            android:background="@drawable/bg_input"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Radio buttons for test state -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radioLocked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Khóa"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/radioOpen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mở"
+                android:layout_weight="1"/>
+        </RadioGroup>
+
+        <!-- Nút tiếp tục -->
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tiếp tục"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#4CAF50"
+            android:padding="12dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,14 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">apphoctap</string>
-    <string name="title_activity_student">StudentActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="app_name">HocTap</string>
+    <string name="app_tagline">Học tập mọi lúc, mọi nơi</string>
+    <string name="app_logo">Logo ứng dụng</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="login">Đăng nhập</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="no_account">Chưa có tài khoản?</string>
+    <string name="create_account">Tạo tài khoản</string>
+    <string name="sign_up_subtitle">Đăng ký để trải nghiệm học tập hiệu quả</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+    <string name="already_have_account">Đã có tài khoản?</string>
 </resources>
