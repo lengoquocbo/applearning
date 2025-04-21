@@ -26,7 +26,7 @@ import kotlinx.parcelize.Parcelize
     ]
 )
 data class Submission(
-    val submisID: Int,
+    val submitID: Int,
     val studentID: String,
     val assignmentID: Int,
     val fileSub: String,

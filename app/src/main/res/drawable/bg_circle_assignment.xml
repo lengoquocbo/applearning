@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Màu nền cho hình tròn -->
+    <solid android:color="#2196F3" /> <!-- Màu xanh mặc định, bạn có thể thay đổi -->
+
+    <!-- Tùy chọn: Thêm viền -->
+    <stroke
+        android:width="2dp"
+        android:color="#1565C0" /> <!-- Màu viền đậm hơn một chút -->
+
+    <!-- Tùy chọn: Thêm padding bên trong -->
+    <padding
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp" />
+
+    <!-- Tùy chọn: Kích thước đề xuất -->
+    <size
+        android:width="48dp"
+        android:height="48dp" />
+</shape>

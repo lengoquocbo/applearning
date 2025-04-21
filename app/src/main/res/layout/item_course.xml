@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="16dp">
+
+        <!-- Banner màu của khóa học -->
+        <View
+            android:id="@+id/viewCourseBanner"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:background="@color/course_color_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Ảnh đại diện khóa học -->
+        <ImageView
+            android:id="@+id/imageViewCourse"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/circle_gradient_purple"
+            android:padding="8dp"
+            android:src="@drawable/ic_class"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/viewCourseBanner"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Thông tin khóa học -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewMore"
+            app:layout_constraintStart_toEndOf="@id/imageViewCourse"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Tên khóa học -->
+            <TextView
+                android:id="@+id/textViewCourseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_color_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Lập trình Android nâng cao" />
+
+            <!-- Mã khóa học -->
+            <TextView
+                android:id="@+id/textViewCourseCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_color_secondary"
+                android:textSize="14sp"
+                tools:text="CS501 - Học kỳ 1 (2024-2025)" />
+
+            <!-- Tên giảng viên -->
+            <TextView
+                android:id="@+id/textViewTeacherName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_color_secondary"
+                android:textSize="14sp"
+                tools:text="GV: Nguyễn Văn A" />
+
+        </LinearLayout>
+
+        <!-- Nút menu tùy chọn -->
+        <ImageView
+            android:id="@+id/imageViewMore"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_more"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
