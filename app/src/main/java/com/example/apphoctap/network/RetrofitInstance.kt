@@ -1,27 +1,26 @@
-package com.yourapp.network
+package com.example.apphoctap.network
 
-import android.content.Context
-import com.example.apphoctap.network.AuthInterceptor
-import okhttp3.OkHttpClient
+import com.example.apphoctap.network.api.AuthApi
+import com.example.apphoctap.repository.AuthRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://localhost:8000/"
 
-    fun create(context: Context): Retrofit {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(context)) // Thêm Interceptor vào OkHttpClient
-            .connectTimeout(30, TimeUnit.SECONDS) // Timeout kết nối
-            .readTimeout(30, TimeUnit.SECONDS) // Timeout đọc dữ liệu
-            .writeTimeout(30, TimeUnit.SECONDS) // Timeout ghi dữ liệu
-            .build()
+    private const val BASE_URL = "http://192.168.1.5:8080/"
 
-        return Retrofit.Builder()
+    private val retrofit by lazy {
+        Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(okHttpClient) // Sử dụng OkHttpClient với Interceptor
-            .addConverterFactory(GsonConverterFactory.create()) // Chuyển đổi JSON sang Object
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    val authApi: AuthApi by lazy {
+        retrofit.create(AuthApi::class.java)
+    }
+    val authRepository: AuthRepository by lazy {
+        AuthRepository(authApi)
+    }
+
 }
