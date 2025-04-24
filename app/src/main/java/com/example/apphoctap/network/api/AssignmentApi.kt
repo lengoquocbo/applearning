@@ -12,19 +12,19 @@ import retrofit2.http.Query
 
 interface AssignmentApi {
 
-    @GET("assignments")
+    @GET("/assignments/")
     suspend fun getAllAssingment() : List<Assignment>
 
-    @GET("assignments")
+    @GET("/assignments/")
     suspend fun getAssignmentByClassId(@Query("classId") ClassId : String) : Response<List<Assignment>>
 
-    @POST("assignments")
+    @POST("/assignments/")
     suspend fun createAssignment(@Body assignment: Assignment) : Response<Assignment>
 
-    @PUT("assignments/{id}")
+    @PUT("/assignments/{id}/")
     suspend fun updateAssignment(@Path("id") assignmentId : Int, @Body assignment: Assignment) : Response<Assignment>
 
-    @DELETE("assignments/{id}")
+    @DELETE("/assignments/{id}/")
     suspend fun deleteAssignment(@Path("id") assignmentId : Int) : Response<Unit>
 
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AssignmentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAssignment(LAssignment : List<Assignment>)
+    suspend fun insertAssignment(Assignment : Assignment)
 
     @Update
     suspend fun updateAssignment(Assignment : Assignment)
@@ -23,7 +23,6 @@ interface AssignmentDao {
     @Query("SELECT * FROM assignment WHERE classID = :classId")
     fun getAssignmentsByClass(classId: String): Flow<List<Assignment>>
 
-    @Query("SELECT * FROM assignment WHERE assignmentID = :assignmentId")
-    suspend fun getAssignmentById(assignmentId: Int): Assignment?
+
 
 }

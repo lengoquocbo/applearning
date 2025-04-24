@@ -10,7 +10,4 @@ import com.example.apphoctap.model.Flashcard
 interface FlashcardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFlashcard(flashcard: Flashcard)
-
-    @Query("SELECT * FROM flashcards WHERE assignmentID = :assignmentId")
-    suspend fun getFlashcardsByAssignment(assignmentId: String): List<Flashcard>
 }

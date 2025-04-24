@@ -28,7 +28,7 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập địa chỉ Gmail..."
+            android:hint="Nhập địa chỉ mail..."
             android:inputType="textEmailAddress"
             android:padding="12dp"
             android:textSize="16sp"
