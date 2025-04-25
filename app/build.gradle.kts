@@ -77,4 +77,8 @@ dependencies {
     implementation(libs.circleimageview)
 
     implementation(libs.androidx.viewpager2.v100)
+
+    // Activity and Fragment KTX support
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
 }

@@ -90,9 +90,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun navigateBasedOnRole(role: String) {
         when (role) {
-            "STUDENT", "TEACHER" -> {
+            "STUDENT" ->
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            }
+            "TEACHER" ->
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             else -> {
                 Toast.makeText(this@LoginActivity, "Không xác định được vai trò người dùng", Toast.LENGTH_SHORT).show()
             }

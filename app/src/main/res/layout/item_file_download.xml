@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#F0F4F8"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- File Icon -->
+        <ImageView
+            android:id="@+id/ivFileIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_file_icon"
+            android:padding="8dp"
+            android:src="@drawable/ic_file"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#FFFFFF" />
+
+        <!-- File Type Text -->
+        <TextView
+            android:id="@+id/tvFileType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PDF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivFileIcon"
+            app:layout_constraintEnd_toEndOf="@id/ivFileIcon"
+            app:layout_constraintStart_toStartOf="@id/ivFileIcon"
+            app:layout_constraintTop_toTopOf="@id/ivFileIcon" />
+
+        <!-- File Name -->
+        <TextView
+            android:id="@+id/tvFileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Đề kiểm tra toán.pdf"
+            android:textColor="#202020"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/btnFolder"
+            app:layout_constraintStart_toEndOf="@id/ivFileIcon"
+            app:layout_constraintTop_toTopOf="@id/ivFileIcon" />
+
+        <!-- File Size and Date -->
+        <TextView
+            android:id="@+id/tvFileInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:text="256 KB • 20/04/2025"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/ivFileIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvFileName" />
+
+        <!-- Folder Button -->
+        <ImageButton
+            android:id="@+id/btnFolder"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_folder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnMoreOptions"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#444444" />
+
+        <!-- More Options Button -->
+        <ImageButton
+            android:id="@+id/btnMoreOptions"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_more_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#444444" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

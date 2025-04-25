@@ -21,4 +21,7 @@
     <string name="document">Document</string>
     <string name="assignment">Assignment</string>
     <string name="home">Home</string>
+    <string name="open">Open Navigation Drawer</string>
+    <string name="close">Close Navigation Drawer</string>
+    <string name="create_document">Create document</string>
 </resources>
