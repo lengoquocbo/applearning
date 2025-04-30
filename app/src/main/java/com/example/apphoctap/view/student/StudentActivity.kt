@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.apphoctap.R
 import com.example.apphoctap.databinding.ActivityStudentBinding
-import com.example.apphoctap.view.student.ui.chat.ChatFragment
 import com.example.apphoctap.view.student.ui.course.CourseFragment
 import com.example.apphoctap.view.student.ui.document.DocumentFragment
 import com.example.apphoctap.view.student.ui.home.HomeFragment
@@ -20,9 +19,6 @@ class StudentActivity : AppCompatActivity() {
         binding = ActivityStudentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //set actionBar
-        setSupportActionBar(binding.toolbar)
-
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_home -> {
@@ -31,10 +27,6 @@ class StudentActivity : AppCompatActivity() {
                 }
                 R.id.navigation_courses -> {
                     loadFragment(CourseFragment())
-                    return@setOnItemSelectedListener true
-                }
-                R.id.nav_message -> {
-                    loadFragment(ChatFragment())
                     return@setOnItemSelectedListener true
                 }
                 R.id.nav_document -> {

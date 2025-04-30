@@ -8,10 +8,6 @@
         android:icon="@drawable/document_svgrepo_com"
         android:title="@string/course" />
     <item
-        android:id="@+id/nav_message"
-        android:icon="@drawable/ic_message"
-        android:title="@string/message" />
-    <item
         android:id="@+id/nav_document"
         android:icon="@drawable/document_svgrepo_com"
         android:title="@string/document" />

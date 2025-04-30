@@ -1,4 +1,4 @@
-package com.example.apphoctap.view.student.ui.chat
+package com.example.apphoctap.view.student.ui.course.chatmanagement
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ class ChatFragment : Fragment(){
 
     private var _binding : ChatFragmentBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

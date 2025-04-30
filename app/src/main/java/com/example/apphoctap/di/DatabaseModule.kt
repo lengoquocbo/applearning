@@ -3,11 +3,15 @@ package com.example.apphoctap.di
 import android.content.Context
 import androidx.room.Room
 import com.example.apphoctap.database.AppDatabase
-import com.example.apphoctap.database.dao.ClassStudentDao
+import com.example.apphoctap.database.dao.ClassCacheDao
+
+import com.example.apphoctap.database.dao.DeckDao
+import com.example.apphoctap.database.dao.EssayQuestionDao
+import com.example.apphoctap.database.dao.QuestionFileDao
 import com.example.apphoctap.database.dao.FlashcardDao
-import com.example.apphoctap.database.dao.StudentDao
-import com.example.apphoctap.database.dao.SubmissionDao
-import com.example.apphoctap.database.dao.TeacherDao
+import com.example.apphoctap.database.dao.MultiChoiceQuestionDao
+import com.example.apphoctap.database.dao.TrueFalseQuestionDao
+import com.example.apphoctap.database.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,10 +32,13 @@ object DatabaseModule {
         ).build()
     }
 
-    @Provides fun provideSubmissionDao(db: AppDatabase): SubmissionDao = db.submissionDao()
-    @Provides fun provideTeacherDao(db: AppDatabase): TeacherDao = db.teacherDao()
-    @Provides fun provideStudentDao(db: AppDatabase): StudentDao = db.studentDao()
-    @Provides fun provideClassStudentDao(db: AppDatabase): ClassStudentDao = db.classStudentDao()
+    @Provides fun provideDeckDao(db: AppDatabase): DeckDao = db.deckDao()
+    @Provides fun provideQuestionFileDao(db: AppDatabase): QuestionFileDao = db.fileDao()
+    @Provides fun provideEssayQuestionDao(db: AppDatabase): EssayQuestionDao = db.essayQuestionDao()
+    @Provides fun provideTrueFalseQuestionDao(db: AppDatabase): TrueFalseQuestionDao = db.trueFalseQuestionDao()
+    @Provides fun provideMultiChoiceQuestionDao(db: AppDatabase): MultiChoiceQuestionDao = db.multiChoiceQuestionDao()
     @Provides fun provideFlashcardDao(db: AppDatabase): FlashcardDao = db.flashcardDao()
+    @Provides fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
+    @Provides fun provideClassCacheDao(db: AppDatabase): ClassCacheDao = db.classCacheDao()
 
 }

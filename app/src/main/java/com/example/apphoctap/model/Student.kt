@@ -11,5 +11,4 @@ data class Student (
     @PrimaryKey val studentID:String,
     val userID: String,
     val name:String,
-    val birthday:String
 ) : Parcelable

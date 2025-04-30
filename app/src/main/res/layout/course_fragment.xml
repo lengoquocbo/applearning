@@ -8,26 +8,14 @@
     android:background="@color/background_color"
     tools:context=".view.student.ui.course.CourseFragment">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:title="Các Khóa Học Của Tôi"
-        app:titleTextColor="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Nội dung scroll -->
+    <!-- Main content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -37,101 +25,142 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Card nhập mã lớp -->
+            <!-- Join class section with improved styling -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewJoinCourse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                >
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    >
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayoutCourseCode"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="Nhập mã lớp học"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
+                        android:text="Tham gia lớp học mới"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_color_primary"
+                        android:layout_marginBottom="8dp"/>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextCourseCode"
-                            android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutCourseCode"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:maxLines="1" />
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:hint="Nhập mã lớp học">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editTextCourseCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:maxLines="1" />
 
-                    <Button
-                        android:id="@+id/buttonJoinCourse"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Tham Gia"
-                        android:textAllCaps="false"
-                        android:backgroundTint="@color/accent_color"
-                        app:layout_constraintTop_toBottomOf="@id/textInputLayoutCourseCode"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/buttonJoinCourse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tham gia"
+                            android:textAllCaps="false"
+                            android:backgroundTint="@color/accent_color"/>
+                    </LinearLayout>
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Tiêu đề -->
+            <!-- Course list section -->
             <TextView
                 android:id="@+id/textViewCourseListTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Danh Sách Lớp Học Đã Tham Gia"
+                android:text="Lớp học đã tham gia"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_color_primary"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginHorizontal="16dp"/>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E0E0E0"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- RecyclerView -->
+            <!-- RecyclerView with improved spacing -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewMyCourses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:clipToPadding="false"
+                android:paddingHorizontal="16dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_course" />
 
-            <!-- Empty State -->
+            <!-- Empty State with improved design -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutEmptyCourses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="24dp"
+                android:padding="32dp"
+                android:layout_marginTop="32dp"
                 android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imageViewEmptyCourses"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
                     android:src="@drawable/ic_class"
+                    android:alpha="0.7"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/textViewEmptyTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="Chưa có lớp học nào"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color_primary"
+                    app:layout_constraintTop_toBottomOf="@id/imageViewEmptyCourses"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="Bạn chưa tham gia lớp học nào"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@id/imageViewEmptyCourses"
+                    android:text="Hãy nhập mã lớp học để tham gia vào lớp học mới"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@id/textViewEmptyTitle"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

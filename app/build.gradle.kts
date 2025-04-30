@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "2.1.0"
     id("com.google.devtools.ksp")
 }
 
@@ -12,6 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.apphoctap"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -44,6 +46,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    ksp{
+        arg("room.schemaLocation", "${projectDir}/schemas")
+        arg("room.incremental", "true")
+    }
 }
 
 dependencies {
@@ -55,6 +61,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,9 +76,7 @@ dependencies {
     //ksp
     ksp(libs.androidx.room.compiler)
 
-    //depen navigation
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+
     implementation(libs.androidx.cardview)
     implementation(libs.material.v1100)
     implementation(libs.hilt.android)
@@ -81,4 +87,5 @@ dependencies {
     // Activity and Fragment KTX support
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.kotlinx.serialization.json)
 }
