@@ -62,19 +62,26 @@
                 android:textStyle="bold"
                 tools:text="Lập trình Android nâng cao" />
 
-            <!-- Mã khóa học -->
-            <TextView
-                android:id="@+id/textViewCourseCode"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/text_color_secondary"
-                android:textSize="14sp"
-                tools:text="CS501 - Học kỳ 1 (2024-2025)" />
+                android:orientation="horizontal">
 
-            <!-- Tên giảng viên -->
+                <TextView
+                    android:id="@+id/tv_enrollmentkey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="CS501"/>
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10sp"
+                    tools:text="Học kỳ 1 (2024-2025)"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/textViewTeacherName"
                 android:layout_width="match_parent"

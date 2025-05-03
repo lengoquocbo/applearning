@@ -8,14 +8,21 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ClassStudentApi {
-    @POST("class-student")
+    @POST("class_student")
     suspend fun addStudentToClass(@Body classStudent: ClassStudent): Response<Unit>
 
-    @GET("class-student/{classId}")
+    @GET("class_student")
     suspend fun getStudentsByClass(@Path("classId") classId: String): Response<List<Student>>
 
-    @DELETE("class-student/{classId}/{studentId}")
-    suspend fun removeStudentFromClass(@Path("classId") classId: String, @Path("studentId") studentId: String): Response<Unit>
+    @DELETE("class-student/{id}")
+    suspend fun removeStudentFromClass(@Path("id") classStudentId: String): Response<Unit>
+
+    @DELETE("class_student")
+    suspend fun leaveClass(
+        @Query("classId") classId: String,
+        @Query("studentId") studentId: String
+    ) : Response<Unit>
 }

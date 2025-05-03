@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context=".view.student.ui.course.CourseFragment">
+    tools:context=".view.student.myclass.myclassmanagement.MyClassFragment">
 
     <!-- Main content -->
     <androidx.core.widget.NestedScrollView
@@ -85,10 +85,43 @@
                             android:textAllCaps="false"
                             android:backgroundTint="@color/accent_color"/>
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tilEnrollmentKey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:hint="Cảnh báo ở đây!"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:visibility="gone"
+                        />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- Course list section -->
+
+            <TextView
+                android:id="@+id/textViewOfflineIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:padding="8dp"
+                android:text="Đang hiển thị dữ liệu offline"
+                android:textColor="@android:color/white"
+                android:background="@android:color/holo_orange_dark"
+                android:gravity="center"
+                android:visibility="gone"/>
+
             <TextView
                 android:id="@+id/textViewCourseListTitle"
                 android:layout_width="match_parent"
@@ -127,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:padding="32dp"
                 android:layout_marginTop="32dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imageViewEmptyCourses"
@@ -164,6 +197,27 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBarLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:visibility="gone" />
+
+            <!-- Error Message -->
+            <TextView
+                android:id="@+id/textViewError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:visibility="gone"
+                tools:text="Đã xảy ra lỗi khi tải dữ liệu." />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

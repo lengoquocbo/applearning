@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.apphoctap.network.api.AssignmentApi
 import com.example.apphoctap.network.api.AuthApi
 import com.example.apphoctap.network.api.ClassStudentApi
-import com.example.apphoctap.network.api.ClassesApi
+import com.example.apphoctap.network.api.ClassApi
 import com.example.apphoctap.network.api.FlashCardApi
 import com.example.apphoctap.network.api.MessageApi
 import com.example.apphoctap.network.api.StudentApi
@@ -13,6 +13,8 @@ import com.example.apphoctap.network.api.TeacherApi
 import com.example.apphoctap.network.api.UserApi
 import com.example.apphoctap.network.api.VideoCallApi
 import com.example.apphoctap.utils.Constraints
+import com.example.apphoctap.utils.NetworkMonitor
+import com.example.apphoctap.utils.NetworkMonitorImpl
 import com.example.apphoctap.utils.SessionManager
 import dagger.Module
 import dagger.Provides
@@ -38,6 +40,19 @@ object NetworkModule {
     fun provideSessionManager(@ApplicationContext context: Context): SessionManager {
         return SessionManager(context)
     }
+
+
+    // Hoặc nếu dùng Dagger/Hilt
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object AppModule {
+        @Provides
+        @Singleton
+        fun provideNetworkMonitor(@ApplicationContext context: Context): NetworkMonitor {
+            return NetworkMonitorImpl(context)
+        }
+    }
+
 
 //    /* Cung cấp một instance của AuthInterceptor để chèn
 //    Access Token vào tất cả các request gửi đến server.
@@ -81,7 +96,7 @@ object NetworkModule {
     @Provides @Singleton fun provideUserApiService(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
     @Provides @Singleton fun provideAssignmentApiService(retrofit: Retrofit) : AssignmentApi = retrofit.create(AssignmentApi::class.java)
     @Provides @Singleton fun provideAuthApiService(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
-    @Provides @Singleton fun provideClassesApiService(retrofit: Retrofit) : ClassesApi = retrofit.create(ClassesApi::class.java)
+    @Provides @Singleton fun provideClassesApiService(retrofit: Retrofit) : ClassApi = retrofit.create(ClassApi::class.java)
     @Provides @Singleton fun provideClassStudentApiService(retrofit: Retrofit): ClassStudentApi = retrofit.create(ClassStudentApi::class.java)
     @Provides @Singleton fun provideFlashCardApiService(retrofit: Retrofit) : FlashCardApi = retrofit.create(FlashCardApi::class.java)
     @Provides @Singleton fun provideMessageApiService(retrofit: Retrofit) : MessageApi = retrofit.create(MessageApi::class.java)

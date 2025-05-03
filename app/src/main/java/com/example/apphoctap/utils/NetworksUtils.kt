@@ -5,10 +5,12 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 
-object NetworkUtils {
-    fun isNetworkAvailable(context: Context): Boolean {
+class NetworkMonitorImpl(private val applicationContext: Context) : NetworkMonitor {
+    private var networkCallback: ConnectivityManager.NetworkCallback? = null
+
+    override fun isNetworkAvailable(): Boolean {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
@@ -18,20 +20,38 @@ object NetworkUtils {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
     }
 
-    fun registerNetworkCallback(context: Context, networkCallback: ConnectivityManager.NetworkCallback) {
+    override fun startMonitoring(onNetworkStatusChanged: (Boolean) -> Unit) {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: android.net.Network) {
+                onNetworkStatusChanged(true)
+            }
+
+            override fun onLost(network: android.net.Network) {
+                onNetworkStatusChanged(false)
+            }
+        }
+
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .build()
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+
+        networkCallback?.let {
+            connectivityManager.registerNetworkCallback(networkRequest, it)
+        }
     }
 
-    fun unregisterNetworkCallback(context: Context, networkCallback: ConnectivityManager.NetworkCallback) {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.unregisterNetworkCallback(networkCallback)
+    override fun stopMonitoring() {
+        networkCallback?.let {
+            val connectivityManager =
+                applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            connectivityManager.unregisterNetworkCallback(it)
+            networkCallback = null
+        }
     }
 }
+

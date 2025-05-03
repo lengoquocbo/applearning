@@ -88,4 +88,10 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.kotlinx.serialization.json)
+
+    // ViewModel & Lifecycle
+    implementation(libs.androidx.lifecycle.viewmodel.ktx.v270)
+    implementation(libs.androidx.lifecycle.livedata.ktx.v270)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
 }

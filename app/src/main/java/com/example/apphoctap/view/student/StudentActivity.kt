@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.apphoctap.R
 import com.example.apphoctap.databinding.ActivityStudentBinding
-import com.example.apphoctap.view.student.ui.course.CourseFragment
-import com.example.apphoctap.view.student.ui.document.DocumentFragment
-import com.example.apphoctap.view.student.ui.home.HomeFragment
-import com.example.apphoctap.view.student.ui.profile.ProfileFragment
+import com.example.apphoctap.view.student.myclass.ClassFragment
+import com.example.apphoctap.view.student.document.DocumentFragment
+import com.example.apphoctap.view.student.profile.ProfileFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StudentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudentBinding
 
@@ -22,11 +23,11 @@ class StudentActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navigation_home -> {
-                    loadFragment(HomeFragment())
+                    loadFragment(com.example.apphoctap.view.student.home.HomeFragment())
                     return@setOnItemSelectedListener true
                 }
                 R.id.navigation_courses -> {
-                    loadFragment(CourseFragment())
+                    loadFragment(ClassFragment())
                     return@setOnItemSelectedListener true
                 }
                 R.id.nav_document -> {
