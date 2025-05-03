@@ -80,6 +80,13 @@ object NetworkModule {
 //            .build()
 //    }
 
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder().build()
+    }
+
     // Cung cấp một instance của Retrofit để sử dụng trong toàn bộ ứng dụng.
     @Provides
     @Singleton

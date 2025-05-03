@@ -1,4 +1,4 @@
-package com.example.apphoctap.view.student.myclass.myclassmanagement
+package com.example.apphoctap.view.student.myclass
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,19 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apphoctap.model.ClassUiModel
 import com.example.apphoctap.repository.ClassRepository
-import com.example.apphoctap.utils.AccessDeniedError
-import com.example.apphoctap.utils.InvalidEnrollmentKeyError
 import com.example.apphoctap.utils.JoinClassState
-import com.example.apphoctap.utils.NetworkError
 import com.example.apphoctap.utils.ResultAction
 import com.example.apphoctap.utils.UiState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class ClassViewModel @Inject constructor(private val classRepository: ClassRepository) : ViewModel() {
+@HiltViewModel()
+class ClassViewModel @Inject constructor(
+    private val classRepository: ClassRepository) : ViewModel() {
 
     private val _classes = MutableLiveData<UiState<List<ClassUiModel>>>(UiState.Loading)
     val classes: LiveData<UiState<List<ClassUiModel>>> = _classes
@@ -26,7 +26,7 @@ class ClassViewModel @Inject constructor(private val classRepository: ClassRepos
     private val _joinClassState = MutableLiveData<JoinClassState>(JoinClassState.Idle)
     val joinClassState: LiveData<JoinClassState> = _joinClassState
 
-    //Quan sát trạng thái của 1 thao tác
+    //Quan sát trạng thái của 1 thao tác
     private val _operationStatus = MutableLiveData<UiState<String>>()
     val operationStatus: LiveData<UiState<String>> = _operationStatus
 
@@ -76,11 +76,9 @@ class ClassViewModel @Inject constructor(private val classRepository: ClassRepos
                     _joinClassState.value = JoinClassState.Error("Không thể tham gia lớp học. Vui lòng kiểm tra lại mã tham gia.")
                 }
                 is ResultAction.Loading -> {
-                    //chưa biết nên xử lý như thế nào
+                    //chưa biết nên xử lý như thế nào
                 }
             }
         }
     }
-
-
 }

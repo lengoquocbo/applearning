@@ -1,4 +1,4 @@
-package com.example.apphoctap.view.student.myclass.myclassmanagement
+package com.example.apphoctap.view.student.myclass
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

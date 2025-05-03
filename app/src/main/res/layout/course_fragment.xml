@@ -86,16 +86,6 @@
                             android:backgroundTint="@color/accent_color"/>
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tilEnrollmentKey"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:hint="Cảnh báo ở đây!"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:visibility="gone"
-                        />
 
                     <ProgressBar
                         android:id="@+id/progressBar"

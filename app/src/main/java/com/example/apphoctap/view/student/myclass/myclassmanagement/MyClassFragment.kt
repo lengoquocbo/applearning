@@ -3,6 +3,7 @@ package com.example.apphoctap.view.student.myclass.myclassmanagement
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import com.example.apphoctap.databinding.CourseFragmentBinding
 import com.example.apphoctap.utils.JoinClassState
 import com.example.apphoctap.utils.PreferenceHelper
 import com.example.apphoctap.utils.UiState
+import com.example.apphoctap.view.student.myclass.ClassAdapter
+import com.example.apphoctap.view.student.myclass.ClassViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +34,7 @@ class MyClassFragment : Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = CourseFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -39,6 +42,9 @@ class MyClassFragment : Fragment(){
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("Kiemtra", "onViewCreated được gọi")
+
 
         val prefHelper = PreferenceHelper(requireContext())
 
@@ -60,6 +66,9 @@ class MyClassFragment : Fragment(){
         //Gọi hàm load dữ liệu
         viewModel.loadClasses()
 
+        Log.d("DEBUG", "binding.buttonJoinCourse: ${binding.buttonJoinCourse}")
+
+
         //Gọi hàm xử lý nút
         setUpUI()
 
@@ -70,12 +79,13 @@ class MyClassFragment : Fragment(){
     private fun setUpUI() {
         binding.buttonJoinCourse.setOnClickListener{
             val enrollmentKey = binding.editTextCourseCode.text.toString()
+            Log.d("DEBUG", "Đã bấm tham gia: $enrollmentKey")
 
             if (enrollmentKey.isBlank()) {
-                binding.tilEnrollmentKey.error = "Vui lòng nhập mã tham gia lớp học"
+                binding.textInputLayoutCourseCode.error = "Vui lòng nhập mã tham gia lớp học"
                 return@setOnClickListener
             } else {
-                binding.tilEnrollmentKey.error = null
+                binding.textInputLayoutCourseCode.error = null
             }
 
             // Gọi ViewModel để xử lý tham gia lớp học
@@ -86,7 +96,7 @@ class MyClassFragment : Fragment(){
         binding.editTextCourseCode.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.tilEnrollmentKey.error = null
+                binding.textInputLayoutCourseCode.error = null
             }
             override fun afterTextChanged(s: Editable?) {}
         })
@@ -103,7 +113,7 @@ class MyClassFragment : Fragment(){
         when (state) {
             is JoinClassState.Idle -> {
                 // Trạng thái ban đầu, không làm gì
-                binding.progressBar.isVisible = true
+                binding.progressBar.isVisible = false
                 binding.buttonJoinCourse.isEnabled = true
             }
             is JoinClassState.Loading -> {
