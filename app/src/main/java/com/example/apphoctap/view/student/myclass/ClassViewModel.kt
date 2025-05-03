@@ -13,7 +13,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel()
@@ -35,45 +37,68 @@ class ClassViewModel @Inject constructor(
     }
 
     fun loadClasses() {
-        viewModelScope.launch {
-            _classes.value = UiState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                _classes.value = UiState.Loading
+                delay(1500)
+            }
             try {
                 val result = classRepository.getClasses()
-                _classes.value = UiState.Success(result)
+                withContext(Dispatchers.Main) {
+                    _classes.value = UiState.Success(result)
+                }
             } catch (e: Exception) {
-                _classes.value = UiState.Error(e.message ?: "Unknown error")
+                withContext(Dispatchers.Main) {
+                    _classes.value = UiState.Error(e.message ?: "Unknown error")
+                }
             }
         }
     }
 
-    fun deleteClass(classId: String, studentId : String) {
-        viewModelScope.launch {
-            _operationStatus.value = UiState.Loading
 
-            when(val result = classRepository.leaveClass(classId, studentId)) {
+
+    fun deleteClass(classId: String, studentId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                _operationStatus.value = UiState.Loading
+            }
+
+            when (val result = classRepository.leaveClass(classId, studentId)) {
                 is UiState.Success -> {
-                    _operationStatus.value = UiState.Success("Class deleted successfully")
-                    loadClasses()
+                    withContext(Dispatchers.Main) {
+                        _operationStatus.value = UiState.Success("Class deleted successfully")
+                        loadClasses() // Hàm này cần chạy trên Main nếu nó cập nhật UI
+                    }
                 }
                 is UiState.Error -> {
-                    _operationStatus.value = UiState.Error(result.message ?: "Failed to delete class")
+                    withContext(Dispatchers.Main) {
+                        _operationStatus.value = UiState.Error(result.message ?: "Failed to delete class")
+                    }
                 }
-                else -> {
-                }
+                else -> Unit
             }
         }
     }
+
 
     fun joinClass(enrollmentKey: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _joinClassState.value = JoinClassState.Loading
+            withContext(Dispatchers.Main) {
+                _joinClassState.value = JoinClassState.Loading
+            }
+
 
             when (val result = classRepository.joinClassByEnrollmentKey(enrollmentKey)) {
                 is ResultAction.Success -> {
-                    _joinClassState.value = JoinClassState.Success(result.data)
+                    withContext(Dispatchers.Main) {
+                        _joinClassState.value = JoinClassState.Success(result.data)
+                    }
                 }
                 is ResultAction.Error -> {
-                    _joinClassState.value = JoinClassState.Error("Không thể tham gia lớp học. Vui lòng kiểm tra lại mã tham gia.")
+                    withContext(Dispatchers.Main) {
+                        _joinClassState.value =
+                            JoinClassState.Error("Không thể tham gia lớp học. Vui lòng kiểm tra lại mã tham gia.")
+                    }
                 }
                 is ResultAction.Loading -> {
                     //chưa biết nên xử lý như thế nào

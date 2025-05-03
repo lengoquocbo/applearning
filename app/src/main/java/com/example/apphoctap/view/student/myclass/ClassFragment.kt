@@ -61,7 +61,9 @@ class ClassFragment : Fragment() {
         observeViewModel()
 
         //Gọi hàm load dữ liệu
-        viewModel.loadClasses()
+        view.post {
+            viewModel.loadClasses()
+        }
 
         Log.d("DEBUG", "binding.buttonJoinCourse: ${binding.buttonJoinCourse}")
 
