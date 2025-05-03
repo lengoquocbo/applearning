@@ -1,12 +1,11 @@
 package com.example.apphoctap.utils
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.example.apphoctap.model.ExposedUser
 
-class SessionManager(context: Context) {
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("UserPrefs", MODE_PRIVATE)
+class SessionManager (context: Context) {
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
     companion object {
         private const val KEY_ACCESS_TOKEN = "ACCESS_TOKEN"
@@ -15,6 +14,9 @@ class SessionManager(context: Context) {
         private const val KEY_USER_EMAIL = "USER_EMAIL"
         private const val KEY_USER_ROLE = "USER_ROLE"
         private const val KEY_IS_LOGGED_IN = "IS_LOGGED_IN"
+        private const val KEY_ROLE_ID = "ROLE_ID"
+        private const val KEY_TEACHER_ID = "TEACHER_ID"
+        private const val KEY_STUDENT_ID = "STUDENT_ID"
     }
 
     fun saveUserSession(accessToken: String, refreshToken: String, role: String) {
@@ -28,6 +30,16 @@ class SessionManager(context: Context) {
                 putString(KEY_USER_ID, payload.optString("userID", ""))
                 putString(KEY_USER_EMAIL, payload.optString("email", ""))
                 putString(KEY_USER_ROLE, role) // Lưu role từ phản hồi API
+                putString(KEY_ROLE_ID, payload.optString("roleID", ""))
+
+                // Lưu teacherID và studentID từ token (nếu có)
+                if (payload.has("teacherID")) {
+                    putString(KEY_TEACHER_ID, payload.optString("teacherID", ""))
+                }
+                if (payload.has("studentID")) {
+                    putString(KEY_STUDENT_ID, payload.optString("studentID", ""))
+                }
+
                 putBoolean(KEY_IS_LOGGED_IN, true)
                 apply()
             }
@@ -45,6 +57,14 @@ class SessionManager(context: Context) {
             if (payload != null) {
                 putString(KEY_USER_ID, payload.optString("userID", ""))
                 putString(KEY_USER_EMAIL, payload.optString("email", ""))
+
+                // Cập nhật teacherID và studentID từ token mới (nếu có)
+                if (payload.has("teacherID")) {
+                    putString(KEY_TEACHER_ID, payload.optString("teacherID", ""))
+                }
+                if (payload.has("studentID")) {
+                    putString(KEY_STUDENT_ID, payload.optString("studentID", ""))
+                }
                 // Không cập nhật role vì chúng ta giả định role không thay đổi
             }
 
@@ -75,6 +95,14 @@ class SessionManager(context: Context) {
         return sharedPreferences.getString(KEY_USER_ROLE, "") ?: ""
     }
 
+    fun getTeacherID(): String? {
+        return sharedPreferences.getString(KEY_TEACHER_ID, null)
+    }
+
+    fun getStudentID(): String? {
+        return sharedPreferences.getString(KEY_STUDENT_ID, null)
+    }
+
     fun clearSession() {
         sharedPreferences.edit().apply {
             clear() // Xóa tất cả thông tin
@@ -91,5 +119,4 @@ class SessionManager(context: Context) {
         val token = getAccessToken()
         return !token.isNullOrEmpty() && !JwtUtils.isTokenExpired(token)
     }
-
 }

@@ -1,6 +1,8 @@
 package com.example.apphoctap.utils
 
 import android.util.Base64
+import android.util.Log
+import org.json.JSONException
 import org.json.JSONObject
 
 object JwtUtils {
@@ -34,7 +36,47 @@ object JwtUtils {
             return true
         }
     }
+//    /**
+//     * Lấy teacherID từ token JWT
+//     * @param token JWT token
+//     * @return teacherID hoặc null nếu không tìm thấy
+//     */
+    fun getTeacherIDFromToken(token: String): String? {
+        val payload = decodeJwt(token) ?: return null
 
+        return try {
+            // Trích xuất teacherID từ payload của token
+            if (payload.has("teacherID")) {
+                payload.getString("teacherID")
+            } else {
+                null
+            }
+        } catch (e: JSONException) {
+            Log.e("JwtUtils", "Error extracting teacherID from token: ${e.message}")
+            null
+        }
+    }
+
+//    /**
+//     * Lấy studentID từ token JWT
+//     * @param token JWT token
+//     * @return studentID hoặc null nếu không tìm thấy
+//     */
+    fun getStudentIDFromToken(token: String): String? {
+        val payload = decodeJwt(token) ?: return null
+
+        return try {
+            // Trích xuất studentID từ payload của token
+            if (payload.has("studentID")) {
+                payload.getString("studentID")
+            } else {
+                null
+            }
+        } catch (e: JSONException) {
+            Log.e("JwtUtils", "Error extracting studentID from token: ${e.message}")
+            null
+        }
+    }
     fun getUserIdFromToken(token: String): String? {
         return decodeJwt(token)?.optString("userID")
     }

@@ -30,7 +30,7 @@ class RegisterViewModel : ViewModel() {
                     _registerState.value = RegisterState.Error(errorMessage)
                 }
             } catch (e: Exception) {
-                _registerState.value = RegisterState.Error("Lỗi kết nối: ${e.message}")
+                _registerState.value = RegisterState.Error("LỖI KẾT NỐI MẠNG")
             }
         }
     }

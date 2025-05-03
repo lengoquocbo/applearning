@@ -37,6 +37,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                         if (payload != null) {
                             val userId = payload.optString("userID", "")
                             val email = payload.optString("email", "")
+                            val ID = payload.optString("teacherID", "")
                             val role = body.role
 
                             val user = ExposedUser(
@@ -58,6 +59,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                             )
                             println(body.token)
                             println(body.refreshToken)
+                            println(ID)
                             println(user.userID)
                             println(user.email)
                             println(user.role)
@@ -76,7 +78,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
             } catch (e: Exception) {
-                loginState.value = com.example.apphoctap.model.LoginState.Error("Lỗi kết nối: ${e.message}")
+                loginState.value = com.example.apphoctap.model.LoginState.Error("LỖI KẾT NỐI MẠNG")
             }
         }
     }

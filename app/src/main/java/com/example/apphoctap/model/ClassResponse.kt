@@ -1,6 +1,7 @@
 package com.example.apphoctap.model
 
 import android.os.Parcelable
+
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -14,3 +15,4 @@ data class ClassResponse(
     val updateAt : String,
     val enrollmentKey : String
 ) : Parcelable
+data class CreateClassResponse(val message: String)

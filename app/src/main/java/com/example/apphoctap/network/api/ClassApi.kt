@@ -1,6 +1,8 @@
 package com.example.apphoctap.network.api
 
 import com.example.apphoctap.model.ClassResponse
+import com.example.apphoctap.model.CreateClassRequest
+import com.example.apphoctap.model.CreateClassResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -12,8 +14,10 @@ import retrofit2.http.Query
 
 interface ClassApi {
 
-    @POST("classes")
-    suspend fun createClass(@Body classResponseData: ClassResponse): Response<ClassResponse>
+    @POST("class/create")
+    suspend fun createClass(
+        @Body CreateClassRequest: CreateClassRequest,
+    ): Response<CreateClassResponse>
 
     @GET("classes/{id}")
     suspend fun getClass(@Path("id") classId: String): Response<ClassResponse>

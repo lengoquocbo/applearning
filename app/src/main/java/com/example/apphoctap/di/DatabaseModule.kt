@@ -19,13 +19,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     @Provides
     @Singleton
-    fun provideDatbase(@ApplicationContext context: Context) : AppDatabase{
+    fun provideDatbase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
@@ -41,5 +41,4 @@ object DatabaseModule {
     @Provides fun provideFlashcardDao(db: AppDatabase): FlashcardDao = db.flashcardDao()
     @Provides fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
     @Provides fun provideClassCacheDao(db: AppDatabase): ClassCacheDao = db.classCacheDao()
-
 }

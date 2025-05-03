@@ -1,5 +1,3 @@
-
-
 package com.example.apphoctap.network
 
 import android.content.Context
@@ -11,78 +9,64 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthenticationInterceptor @Inject constructor(
-    private val context: Context
-) : Interceptor {
+@Singleton
+class AuthInterceptor @Inject constructor(context: Context) : Interceptor {
 
-    private val sessionManager = SessionManager(context)
+    private val sessionManager: SessionManager = SessionManager(context)
 
     companion object {
         private const val TAG = "AuthInterceptor"
+        private const val AUTHORIZATION_HEADER = "Authorization"
+        private const val TOKEN_PREFIX = "Bearer "
     }
 
-    @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
-        // Nếu request không cần token
-        if (!requiresAuthentication(originalRequest)) {
-            return chain.proceed(originalRequest)
-        }
+        // Kiểm tra xem người dùng đã đăng nhập và có token hợp lệ không
+        if (sessionManager.isLoggedIn()) {
+            // Lấy token hiện tại
+            val accessToken = sessionManager.getAccessToken()
 
-        // Lấy accessToken hiện tại
-        val accessToken = sessionManager.getAccessToken()
-
-        if (accessToken.isNullOrEmpty()) {
-            Log.d(TAG, "Không có access token, tiếp tục request không có header Authorization")
-            return chain.proceed(originalRequest)
-        }
-
-        // Kiểm tra nếu token hết hạn thì refresh
-        if (JwtUtils.isTokenExpired(accessToken)) {
-            Log.d(TAG, "Access token đã hết hạn, thực hiện refresh token")
-            val refreshResult = refreshToken()
-
-            if (refreshResult == null) {
-                // Refresh token thất bại, yêu cầu đăng nhập lại
-                Log.d(TAG, "Refresh token thất bại, xóa phiên làm việc")
-                sessionManager.clearSession()
-
-                // Broadcast event để UI hiển thị màn hình đăng nhập
-                // (có thể triển khai với LocalBroadcastManager)
-
-                return chain.proceed(originalRequest)
+            if (!accessToken.isNullOrEmpty()) {
+                // Kiểm tra token hết hạn chưa
+                if (JwtUtils.isTokenExpired(accessToken)) {
+                    // Nếu token hết hạn, thử refresh token
+                    val refreshToken = sessionManager.getRefreshToken()
+                    if (!refreshToken.isNullOrEmpty() && !JwtUtils.isTokenExpired(refreshToken)) {
+                        // Thực hiện refresh token (bạn cần triển khai phương thức này)
+                        // Đây là ví dụ, trong thực tế bạn cần gọi API để lấy token mới
+                        val newTokens = refreshTokenSynchronously(refreshToken)
+                        if (newTokens != null) {
+                            // Cập nhật token mới vào SessionManager
+                            sessionManager.updateTokens(newTokens.first, newTokens.second)
+                            // Tạo request mới với token mới
+                            return proceedWithNewToken(chain, originalRequest, newTokens.first)
+                        }
+                    }
+                } else {
+                    // Token vẫn còn hiệu lực, sử dụng nó
+                    return proceedWithNewToken(chain, originalRequest, accessToken)
+                }
             }
-
-            // Tiếp tục với token mới
-            Log.d(TAG, "Refresh token thành công, sử dụng token mới")
-            return chain.proceed(addAuthorizationHeader(originalRequest, refreshResult.first))
         }
 
-        // Token vẫn còn hiệu lực, thêm vào header
-        Log.d(TAG, "Access token vẫn còn hiệu lực, thêm vào header")
-        return chain.proceed(addAuthorizationHeader(originalRequest, accessToken))
+        // Nếu không có token hoặc không thể refresh, gửi request gốc
+        return chain.proceed(originalRequest)
     }
 
-    private fun requiresAuthentication(request: Request): Boolean {
-        val path = request.url().encodedPath()
-        // Loại trừ các endpoint không cần token
-        return !path.contains("auth/login") &&
-                !path.contains("auth/register") &&
-                !path.contains("auth/refreshtoken")
-    }
-
-    private fun addAuthorizationHeader(request: Request, token: String): Request {
-        return request.newBuilder()
-            .header("Authorization", "Bearer $token")
+    private fun proceedWithNewToken(chain: Interceptor.Chain, originalRequest: Request, token: String): Response {
+        val newRequest = originalRequest.newBuilder()
+            .header(AUTHORIZATION_HEADER, "$TOKEN_PREFIX$token")
             .build()
+        return chain.proceed(newRequest)
     }
 
-    // Trả về Pair<accessToken, role> hoặc null nếu thất bại
-    private fun refreshToken(): Pair<String, String>? {
+
+    private fun refreshTokenSynchronously(refreshToken: String): Pair<String, String>? {
         val refreshToken = sessionManager.getRefreshToken() ?: return null
 
         return try {

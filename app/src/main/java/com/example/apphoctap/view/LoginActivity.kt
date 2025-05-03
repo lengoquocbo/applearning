@@ -7,9 +7,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.apphoctap.databinding.ActivityLoginBinding
+import com.example.apphoctap.model.ExposedUser
 import com.example.apphoctap.model.ExposedUserLogin
 import com.example.apphoctap.model.LoginState
+import com.example.apphoctap.utils.JwtUtils
 import com.example.apphoctap.utils.SessionManager
+import com.example.apphoctap.view.student.StudentActivity
+import com.example.apphoctap.view.teacher.TeacherActivity
 import com.example.apphoctap.view.viewmodel.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
 
         if (sessionManager.isLoggedIn()) {
-            navigateBasedOnRole(sessionManager.getUserRole() ?: "")
+            navigateBasedOnRole(sessionManager.getUserRole() ?: "", sessionManager.getUserDetails())
             finish()
             return
         }
@@ -65,6 +69,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     is LoginState.Success -> withContext(Dispatchers.Main) {
+
                         binding.btnLogin.isEnabled = true
 
                         sessionManager.saveUserSession(
@@ -73,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                             state.user.role
                         )
 
-                        navigateBasedOnRole(state.user.role)
+                        navigateBasedOnRole(state.user.role, state.user)
                         finish()
                     }
 
@@ -88,15 +93,27 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateBasedOnRole(role: String) {
-        when (role) {
-            "STUDENT" ->
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            "TEACHER" ->
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+    private fun navigateBasedOnRole(role: String, user: ExposedUser) {
+        val intent = when (role) {
+            "STUDENT" -> Intent(this, StudentActivity::class.java)
+            "TEACHER" -> Intent(this, TeacherActivity::class.java)
             else -> {
-                Toast.makeText(this@LoginActivity, "Không xác định được vai trò người dùng", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Không xác định được vai trò người dùng", Toast.LENGTH_SHORT).show()
+                return
             }
         }
+
+        // Lấy teacherID và studentID từ SessionManager
+        val teacherID = sessionManager.getTeacherID()
+        val studentID = sessionManager.getStudentID()
+
+        intent.putExtra("userID", user.userID)
+        intent.putExtra("username", user.username)
+        intent.putExtra("email", user.email)
+        intent.putExtra("role", user.role)
+        intent.putExtra("teacherID", teacherID)
+        intent.putExtra("studentID", studentID)
+
+        startActivity(intent)
     }
 }
