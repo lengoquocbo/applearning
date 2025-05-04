@@ -60,11 +60,6 @@ class ClassFragment : Fragment() {
         //Gọi hàm quan sát dữ liệu
         observeViewModel()
 
-        //Gọi hàm load dữ liệu
-        view.post {
-            viewModel.loadClasses()
-        }
-
         Log.d("DEBUG", "binding.buttonJoinCourse: ${binding.buttonJoinCourse}")
 
 
@@ -173,6 +168,7 @@ class ClassFragment : Fragment() {
             when (resource) {
                 is UiState.Loading -> {
                     binding.progressBarLoading.visibility = View.VISIBLE
+                    binding.recyclerViewMyCourses.visibility = View.GONE
                     binding.textViewError.visibility = View.GONE
                 }
                 is UiState.Success -> {

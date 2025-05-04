@@ -80,4 +80,8 @@ dependencies {
 
     implementation(libs.circleimageview)
     implementation(libs.androidx.viewpager2)
+
+    implementation(libs.glide) // Thêm Glide vào dependencies
+    annotationProcessor(libs.compiler)
 }
+

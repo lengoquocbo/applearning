@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.3"
+compiler = "4.15.1"
 kotlin = "2.0.21"
 hiltVersion = "2.56.1"
 coreKtx = "1.16.0"
@@ -22,6 +23,8 @@ circleimageview = "3.1.0"
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "compiler" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }

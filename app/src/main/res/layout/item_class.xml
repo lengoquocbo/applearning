@@ -26,7 +26,7 @@
             android:padding="12dp">
 
             <TextView
-                android:id="@+id/tvClassCategory"
+                android:id="@+id/tv_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MOTA"
@@ -51,48 +51,23 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvClassPrice"
+                    android:id="@+id/tv_Tieude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$99"
+                    android:text="GV: "
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="8dp"
-                    android:background="@color/divider" />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center_vertical"
-                    app:tint="@color/yellow" />
-
+                    android:textStyle="bold"
+                     />
                 <TextView
-                    android:id="@+id/tvClassRating"
+                    android:id="@+id/tv_tengiangvien"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="4.2"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="8dp"
-                    android:background="@color/divider" />
-
-                <TextView
-                    android:id="@+id/tvClassStudents"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="7830 Std"
+                    android:text="Nguyễn Văn A"
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10sp"/>
 
             </LinearLayout>
         </LinearLayout>

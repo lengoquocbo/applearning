@@ -10,5 +10,6 @@ data class ClassCacheEntitiy(
     val teacherName: String,
     val description: String,
     val enrollmentKey : String,
-    val lastSyncTime: Long // Thời gian đồng bộ lần cuối
+    val lastSyncTime: Long, // Thời gian đồng bộ lần cuối
+    val lastAccessTime : Long? = null //Thời gian truy cập lần cuối
 )

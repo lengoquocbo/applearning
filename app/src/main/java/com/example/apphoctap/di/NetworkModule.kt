@@ -2,6 +2,7 @@ package com.example.apphoctap.di
 
 import android.content.Context
 import com.example.apphoctap.network.AuthInterceptor
+import com.example.apphoctap.network.AuthInterceptorHilt
 import com.example.apphoctap.network.api.AssignmentApi
 import com.example.apphoctap.network.api.AuthApi
 import com.example.apphoctap.network.api.ClassStudentApi
@@ -61,15 +62,15 @@ object NetworkModule {
      */
     @Provides
     @Singleton
-    fun provideAuthInterceptor(@ApplicationContext context: Context): AuthInterceptor {
-        return AuthInterceptor(context)
+    fun provideAuthInterceptor(@ApplicationContext context: Context): AuthInterceptorHilt {
+        return AuthInterceptorHilt(context)
     }
 
     // Cung cấp một OkHttpClient không có Interceptor (dành cho các API không cần xác thực).
     @Provides
     @Named("NoAuthClient")
     @Singleton
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: AuthInterceptorHilt): OkHttpClient {
         return OkHttpClient.Builder()
             .build()
     }
@@ -78,7 +79,7 @@ object NetworkModule {
     @Provides
     @Named("AuthClient")
     @Singleton
-    fun provideOkHttpClientWithAuth(authInterceptor: AuthInterceptor): OkHttpClient {
+    fun provideOkHttpClientWithAuth(authInterceptor: AuthInterceptorHilt): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .build()
@@ -176,3 +177,4 @@ object NetworkModule {
         retrofit.create(VideoCallApi::class.java)
 
 }
+

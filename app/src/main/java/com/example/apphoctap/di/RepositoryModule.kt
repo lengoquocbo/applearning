@@ -25,7 +25,4 @@ object RepositoryModule {
     ): ClassRepository {
         return ClassRepository(classCacheDao, classApi, networkMonitor, classStudentApi)
     }
-
-
-
 }

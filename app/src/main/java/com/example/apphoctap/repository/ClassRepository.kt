@@ -13,7 +13,6 @@ import com.example.apphoctap.utils.NetworkError
 import com.example.apphoctap.utils.NetworkMonitor
 import com.example.apphoctap.utils.ResultAction
 import com.example.apphoctap.utils.UiState
-import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -60,7 +59,12 @@ class ClassRepository @Inject constructor(
         )
     }
 
-    suspend fun getClasses(): List<ClassUiModel> {
+    suspend fun getNearbyAccessClasses() : List<ClassUiModel>{
+        val cachedClasses = classCacheDao.getRecentlyAccessedClasses()
+        return cachedClasses.map { it.toUiModel() }
+    }
+
+    suspend fun getClasses(studentId: String): List<ClassUiModel> {
         // Bước 1: Luôn kiểm tra cache trước (Local First)
         val cachedClasses = classCacheDao.getAllClasses()
 
@@ -77,7 +81,7 @@ class ClassRepository @Inject constructor(
 
         // Bước 4: Có mạng, thử lấy dữ liệu mới
         return try {
-            val response = classApi.getAllClasses()
+            val response = classApi.getClassByStudentId(studentId)
 
             if (response.isSuccessful && response.body() != null) {
                 val classes = response.body()!!

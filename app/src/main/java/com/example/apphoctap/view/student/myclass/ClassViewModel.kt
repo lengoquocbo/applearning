@@ -8,9 +8,8 @@ import com.example.apphoctap.model.ClassUiModel
 import com.example.apphoctap.repository.ClassRepository
 import com.example.apphoctap.utils.JoinClassState
 import com.example.apphoctap.utils.ResultAction
+import com.example.apphoctap.utils.SessionManager
 import com.example.apphoctap.utils.UiState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,7 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel()
 class ClassViewModel @Inject constructor(
-    private val classRepository: ClassRepository) : ViewModel() {
+    private val classRepository: ClassRepository,
+    private val sessionManager: SessionManager
+) : ViewModel() {
 
     private val _classes = MutableLiveData<UiState<List<ClassUiModel>>>(UiState.Loading)
     val classes: LiveData<UiState<List<ClassUiModel>>> = _classes
@@ -32,18 +33,19 @@ class ClassViewModel @Inject constructor(
     private val _operationStatus = MutableLiveData<UiState<String>>()
     val operationStatus: LiveData<UiState<String>> = _operationStatus
 
+
     init {
-        loadClasses()
+        loadClasses(sessionManager.getStudentID()!!)
     }
 
-    fun loadClasses() {
+    fun loadClasses(studentId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 _classes.value = UiState.Loading
                 delay(1500)
             }
             try {
-                val result = classRepository.getClasses()
+                val result = classRepository.getClasses(studentId)
                 withContext(Dispatchers.Main) {
                     _classes.value = UiState.Success(result)
                 }
@@ -67,7 +69,7 @@ class ClassViewModel @Inject constructor(
                 is UiState.Success -> {
                     withContext(Dispatchers.Main) {
                         _operationStatus.value = UiState.Success("Class deleted successfully")
-                        loadClasses() // Hàm này cần chạy trên Main nếu nó cập nhật UI
+                        loadClasses(studentId) // Hàm này cần chạy trên Main nếu nó cập nhật UI
                     }
                 }
                 is UiState.Error -> {

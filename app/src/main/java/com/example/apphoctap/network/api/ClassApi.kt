@@ -33,6 +33,11 @@ interface ClassApi {
         @Query("limit") limit: Int? = null
     ): Response<List<ClassResponse>>
 
+    @GET("classes")
+    suspend fun getClassByStudentId(
+        @Query("student_id") studentId: String
+    ):Response<List<ClassResponse>>
+
     @PUT("classes/{id}")
     suspend fun updateClass(
         @Path("id") classId: String,
