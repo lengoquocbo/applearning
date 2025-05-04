@@ -14,6 +14,7 @@ import com.example.apphoctap.databinding.FragmentDashboardStudentBinding
 import com.example.apphoctap.utils.UiState
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import com.example.apphoctap.utils.SessionManager
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -35,7 +36,28 @@ class HomeFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var bannerRunnable: Runnable
     private var isScrolling = false
+    private var studentID: String? = null
+    private var userId: String? = null
+    private var username: String? = null
+    private var email: String? = null
+    private var role: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val sessionManager = SessionManager(requireContext())
+        val token = sessionManager.getAccessToken()
+
+        // Lấy teacherID từ token
+          studentID = token?.let { com.example.apphoctap.utils.JwtUtils.getStudentIDFromToken(it) }
+          username = token?.let { com.example.apphoctap.utils.JwtUtils.getUsernameFormToken(it) }
+
+        // Lấy thông tin từ arguments nếu có
+        arguments?.let {
+            userId = it.getString("userID")
+            email = it.getString("email")
+            role = it.getString("role")
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +70,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        binding.tvGreeting.text ="${binding.tvGreeting.text} $username"
 
         bannerAdapter = BannerAdapter(bannerImages)
         binding.promotionSlider.adapter = bannerAdapter
@@ -108,6 +132,7 @@ class HomeFragment : Fragment() {
         super.onResume()
         handler.postDelayed(bannerRunnable, scrollDelay)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

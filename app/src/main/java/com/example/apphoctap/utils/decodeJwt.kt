@@ -77,6 +77,21 @@ object JwtUtils {
             null
         }
     }
+    fun getUsernameFormToken(token: String): String? {
+        val payload = decodeJwt(token) ?: return null
+
+        return try {
+            // Trích xuất studentID từ payload của token
+            if (payload.has("username")) {
+                payload.getString("username")
+            } else {
+                null
+            }
+        } catch (e: JSONException) {
+            Log.e("JwtUtils", "Error extracting username from token: ${e.message}")
+            null
+        }
+    }
     fun getUserIdFromToken(token: String): String? {
         return decodeJwt(token)?.optString("userID")
     }

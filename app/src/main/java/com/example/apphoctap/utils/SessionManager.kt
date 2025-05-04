@@ -11,6 +11,7 @@ class SessionManager (context: Context) {
         private const val KEY_ACCESS_TOKEN = "ACCESS_TOKEN"
         private const val KEY_REFRESH_TOKEN = "REFRESH_TOKEN"
         private const val KEY_USER_ID = "USER_ID"
+        private const val KEY_USER_NAME ="USER_NAME"
         private const val KEY_USER_EMAIL = "USER_EMAIL"
         private const val KEY_USER_ROLE = "USER_ROLE"
         private const val KEY_IS_LOGGED_IN = "IS_LOGGED_IN"
@@ -28,6 +29,7 @@ class SessionManager (context: Context) {
                 putString(KEY_ACCESS_TOKEN, accessToken)
                 putString(KEY_REFRESH_TOKEN, refreshToken)
                 putString(KEY_USER_ID, payload.optString("userID", ""))
+                putString(KEY_USER_NAME, payload.optString("username", ""))
                 putString(KEY_USER_EMAIL, payload.optString("email", ""))
                 putString(KEY_USER_ROLE, role) // Lưu role từ phản hồi API
                 putString(KEY_ROLE_ID, payload.optString("roleID", ""))
@@ -83,7 +85,7 @@ class SessionManager (context: Context) {
     fun getUserDetails(): ExposedUser {
         return ExposedUser(
             userID = sharedPreferences.getString(KEY_USER_ID, "") ?: "",
-            username = sharedPreferences.getString(KEY_USER_EMAIL, "")?.substringBefore('@') ?: "", // Tạo username từ email
+            username = sharedPreferences.getString(KEY_USER_NAME, "")?: "", // Tạo username từ email
             email = sharedPreferences.getString(KEY_USER_EMAIL, "") ?: "",
             password = "", // Không lưu mật khẩu
             role = sharedPreferences.getString(KEY_USER_ROLE, "") ?: "",
@@ -101,6 +103,9 @@ class SessionManager (context: Context) {
 
     fun getStudentID(): String? {
         return sharedPreferences.getString(KEY_STUDENT_ID, null)
+    }
+    fun getUsername(): String? {
+        return sharedPreferences.getString(KEY_USER_NAME, null)
     }
 
     fun clearSession() {
