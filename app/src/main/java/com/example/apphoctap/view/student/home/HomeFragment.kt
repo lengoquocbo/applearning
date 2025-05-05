@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
         val token = sessionManager.getAccessToken()
 
         // Lấy teacherID từ token
-          studentID = token?.let { com.example.apphoctap.utils.JwtUtils.getStudentIDFromToken(it) }
+          studentID = sessionManager.getStudentID()
           username = token?.let { com.example.apphoctap.utils.JwtUtils.getUsernameFormToken(it) }
 
         // Lấy thông tin từ arguments nếu có

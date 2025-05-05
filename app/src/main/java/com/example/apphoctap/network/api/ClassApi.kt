@@ -19,32 +19,30 @@ interface ClassApi {
         @Body CreateClassRequest: CreateClassRequest,
     ): Response<CreateClassResponse>
 
-    @GET("classes/{id}")
+    @GET("class/{id}")
     suspend fun getClass(@Path("id") classId: String): Response<ClassResponse>
 
-    @GET("classes")
+    @GET("class")
     suspend fun getClassByEnrollmentKey(
         @Query("enrollment_key") enrollmentKey: String
     ): Response<ClassResponse>
 
-    @GET("classes")
+    @GET("class")
     suspend fun getAllClasses(
         @Query("teacher_id") teacherId: String? = null,
         @Query("limit") limit: Int? = null
     ): Response<List<ClassResponse>>
 
-    @GET("classes")
-    suspend fun getClassByStudentId(
-        @Query("student_id") studentId: String
-    ):Response<List<ClassResponse>>
+    @GET("class/student")
+    suspend fun getClassByStudentId():Response<List<ClassResponse>>
 
-    @PUT("classes/{id}")
+    @PUT("class/{id}")
     suspend fun updateClass(
         @Path("id") classId: String,
         @Body classResponseData: ClassResponse
     ): Response<ClassResponse>
 
-    @DELETE("classes/{id}")
+    @DELETE("class/{id}")
     suspend fun deleteClass(@Path("id") classId: String): Response<Unit>
 
 }

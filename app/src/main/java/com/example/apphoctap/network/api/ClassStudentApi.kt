@@ -11,8 +11,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ClassStudentApi {
+
     @POST("class_student")
-    suspend fun addStudentToClass(@Body classStudent: ClassStudent): Response<Unit>
+    suspend fun addStudentToClass(@Body classID: String): Response<Unit>
 
     @GET("class_student")
     suspend fun getStudentsByClass(@Path("classId") classId: String): Response<List<Student>>
@@ -23,6 +24,5 @@ interface ClassStudentApi {
     @DELETE("class_student")
     suspend fun leaveClass(
         @Query("classId") classId: String,
-        @Query("studentId") studentId: String
     ) : Response<Unit>
 }

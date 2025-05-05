@@ -13,8 +13,7 @@ import com.example.apphoctap.model.ClassUiModel
 
 class ClassAdapter (
     private var classList : List<ClassUiModel>,
-    private val studentId : String,
-    val onDelete : (classId : String, studentId : String) -> Unit,
+    val onDelete : (classId : String) -> Unit,
 ) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
 
     class ClassViewHolder( val binding: ItemCourseBinding ): RecyclerView.ViewHolder(binding.root)
@@ -32,9 +31,9 @@ class ClassAdapter (
             textViewCourseName.text = classes.className
             tvEnrollmentkey.text = classes.enrollmentKey
             tvDescription.text = classes.description
-            textViewTeacherName.text = "GV: {classes.teacherName}"
+            textViewTeacherName.text = "GV: ${classes.teacherName}"
 
-            imageViewCourse.setOnClickListener{
+            imageViewMore.setOnClickListener{
                 showPopupMenu(it, classes)
             }
         }
@@ -53,7 +52,7 @@ class ClassAdapter (
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.remove_class -> {
-                    onDelete(Class.classId, studentId)
+                    onDelete(Class.classId)
                     true
                 }
                 else -> false

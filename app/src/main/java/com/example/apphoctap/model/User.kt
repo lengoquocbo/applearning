@@ -27,6 +27,8 @@ data class LoginResponse(
     val refreshToken: String,
     val role: String
 )
+
+
 data class RefreshTokenRequest(
     @SerializedName("refreshToken")
     val refreshToken: String

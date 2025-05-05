@@ -2,6 +2,7 @@ package com.example.apphoctap.network
 
 import android.content.Context
 import android.util.Log
+import com.example.apphoctap.model.LoginResponse
 import com.example.apphoctap.model.RefreshTokenRequest
 import com.example.apphoctap.utils.JwtUtils
 import com.example.apphoctap.utils.SessionManager
@@ -36,16 +37,16 @@ class AuthInterceptorHilt @Inject constructor(context: Context) : Interceptor {
                 if (JwtUtils.isTokenExpired(accessToken)) {
                     // Nếu token hết hạn, thử refresh token
                     val refreshToken = sessionManager.getRefreshToken()
+                    Log.d("refreshToken", "refreshToken: $refreshToken")
                     if (!refreshToken.isNullOrEmpty() && !JwtUtils.isTokenExpired(refreshToken)) {
-                        // Thực hiện refresh token (bạn cần triển khai phương thức này)
-                        // Đây là ví dụ, trong thực tế bạn cần gọi API để lấy token mới
                         val newTokens = refreshTokenSynchronously(refreshToken)
                         if (newTokens != null) {
                             // Cập nhật token mới vào SessionManager
+                            Log.d("newTokens", "newTokens: $newTokens")
                             sessionManager.updateTokens(newTokens.first, newTokens.second)
                             // Tạo request mới với token mới
                             return proceedWithNewToken(chain, originalRequest, newTokens.first)
-                        }
+                        } else Log.d("newTokens", "newTokens: null")
                     }
                 } else {
                     // Token vẫn còn hiệu lực, sử dụng nó
@@ -76,7 +77,7 @@ class AuthInterceptorHilt @Inject constructor(context: Context) : Interceptor {
                 val response = authService.refreshToken(refreshRequest)
 
                 if (response.isSuccessful && response.body() != null) {
-                    val loginResponse = response.body()!!
+                    val loginResponse : LoginResponse = response.body()!!
                     // Lưu token mới và role
                     sessionManager.updateTokens(loginResponse.token, loginResponse.refreshToken)
 

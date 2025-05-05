@@ -1,15 +1,22 @@
 package com.example.apphoctap.view.student.myclass
 
+import LeaveClassState
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apphoctap.model.ClassUiModel
 import com.example.apphoctap.repository.ClassRepository
+import com.example.apphoctap.utils.AccessDeniedError
+import com.example.apphoctap.utils.ApiError
 import com.example.apphoctap.utils.JoinClassState
+import com.example.apphoctap.utils.NetworkError
+import com.example.apphoctap.utils.NotFoundError
 import com.example.apphoctap.utils.ResultAction
 import com.example.apphoctap.utils.SessionManager
 import com.example.apphoctap.utils.UiState
+import com.example.apphoctap.utils.UnauthorizedError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -33,19 +40,23 @@ class ClassViewModel @Inject constructor(
     private val _operationStatus = MutableLiveData<UiState<String>>()
     val operationStatus: LiveData<UiState<String>> = _operationStatus
 
+    private val _leaveClassState = MutableLiveData<LeaveClassState>()
+    val leaveClassState: LiveData<LeaveClassState> = _leaveClassState
 
     init {
-        loadClasses(sessionManager.getStudentID()!!)
+        loadClasses()
     }
 
-    fun loadClasses(studentId: String) {
+    fun loadClasses() {
+        Log.d("token", "token của học sinh ${sessionManager.getAccessToken()}")
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 _classes.value = UiState.Loading
                 delay(1500)
             }
             try {
-                val result = classRepository.getClasses(studentId)
+                val result = classRepository.getClasses()
+                Log.d("ClassViewModel", "Loaded classes: $result")
                 withContext(Dispatchers.Main) {
                     _classes.value = UiState.Success(result)
                 }
@@ -58,26 +69,32 @@ class ClassViewModel @Inject constructor(
     }
 
 
-
-    fun deleteClass(classId: String, studentId: String) {
+    fun leaveClass(classId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
-                _operationStatus.value = UiState.Loading
+                _leaveClassState.value = LeaveClassState.Loading
             }
 
-            when (val result = classRepository.leaveClass(classId, studentId)) {
-                is UiState.Success -> {
+            when (val result = classRepository.leaveClass(classId)) {
+                is ResultAction.Success -> {
                     withContext(Dispatchers.Main) {
-                        _operationStatus.value = UiState.Success("Class deleted successfully")
-                        loadClasses(studentId) // Hàm này cần chạy trên Main nếu nó cập nhật UI
+                        _leaveClassState.value = LeaveClassState.Success
                     }
                 }
-                is UiState.Error -> {
+                is ResultAction.Error -> {
                     withContext(Dispatchers.Main) {
-                        _operationStatus.value = UiState.Error(result.message ?: "Failed to delete class")
+                        val message = when (result.error) {
+                            is UnauthorizedError -> "Vui lòng đăng nhập lại."
+                            is AccessDeniedError -> "Bạn không có quyền rời lớp này."
+                            is NotFoundError -> "Không tìm thấy lớp học hoặc học sinh."
+                            is NetworkError -> "Lỗi kết nối mạng: ${result.error.message}"
+                            is ApiError -> result.error.message
+                            else -> "Không thể rời lớp học. Vui lòng thử lại."
+                        }
+                        _leaveClassState.value = LeaveClassState.Error(message)
                     }
                 }
-                else -> Unit
+                is ResultAction.Loading -> {}
             }
         }
     }
@@ -88,7 +105,6 @@ class ClassViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 _joinClassState.value = JoinClassState.Loading
             }
-
 
             when (val result = classRepository.joinClassByEnrollmentKey(enrollmentKey)) {
                 is ResultAction.Success -> {

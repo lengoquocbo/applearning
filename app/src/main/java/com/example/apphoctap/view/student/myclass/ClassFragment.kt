@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apphoctap.databinding.CourseFragmentBinding
 import com.example.apphoctap.utils.JoinClassState
-import com.example.apphoctap.utils.PreferenceHelper
 import com.example.apphoctap.utils.UiState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,15 +42,11 @@ class ClassFragment : Fragment() {
         Log.d("Kiemtra", "onViewCreated được gọi")
 
 
-        val prefHelper = PreferenceHelper(requireContext())
-
-        val studentId = prefHelper.getString("studentID")
         //Set up RecyclerView
         classAdapter = ClassAdapter(
             emptyList(),
-            studentId,
-            onDelete = { classId, studentId ->
-                deleteClass (classId, studentId)
+            onDelete = {
+                deleteClass (it)
             }
         )
         binding.recyclerViewMyCourses.adapter = classAdapter
@@ -68,6 +63,8 @@ class ClassFragment : Fragment() {
 
         //Gọi hàm quan sát hành động tham gia lớp học
         observeViewModelJoinClass()
+
+        observedeleteViewModel()
     }
 
     private fun setUpUI() {
@@ -84,6 +81,7 @@ class ClassFragment : Fragment() {
 
             // Gọi ViewModel để xử lý tham gia lớp học
             viewModel.joinClass(enrollmentKey)
+            viewModel.loadClasses()
         }
 
         // Thiết lập sự kiện xóa lỗi khi người dùng nhập text
@@ -99,6 +97,7 @@ class ClassFragment : Fragment() {
     private fun observeViewModelJoinClass() {
         // Quan sát trạng thái tham gia lớp học
         viewModel.joinClassState.observe(viewLifecycleOwner) { state ->
+            if (state is JoinClassState.Success) viewModel.loadClasses()
             handleJoinClassState(state)
         }
     }
@@ -152,12 +151,52 @@ class ClassFragment : Fragment() {
     }
 
 
-    fun deleteClass(ClassId: String, studentId: String) {
+    private fun observedeleteViewModel() {
+        // Quan sát trạng thái rời lớp học
+        viewModel.leaveClassState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is LeaveClassState.Idle -> {
+                    binding.progressBar.isVisible = false
+                }
+                is LeaveClassState.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is LeaveClassState.Success -> {
+                    binding.progressBar.isVisible = false
+                    Snackbar.make(
+                        binding.root,
+                        "Rời lớp học thành công",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    // Cập nhật danh sách lớp học nếu cần
+                    viewModel.loadClasses()
+                }
+                is LeaveClassState.Error -> {
+                    binding.progressBar.isVisible = false
+                    Snackbar.make(
+                        binding.root,
+                        state.message,
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Thử lại") {
+                        // Gọi lại deleteClass với cùng tham số
+                        deleteClass(classId = state.classId)
+                    }.show()
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    fun deleteClass(classId: String) {
+
+        // Hiển thị AlertDialog để xác nhận
         val dialog = AlertDialog.Builder(requireContext())
-        dialog.setTitle("Rời khỏi lớp")
-        dialog.setMessage("Bạn có chắc chắn muốn rời lớp này?")
-        dialog.setPositiveButton("Có") { _, _ ->
-            viewModel.deleteClass(ClassId, studentId)
+        dialog.setTitle("Rời khỏi lớp")
+        dialog.setMessage("Bạn có chắc chắn muốn rời lớp này?")
+        dialog.setPositiveButton("Có") { _, _ ->
+            viewModel.leaveClass(classId)
         }
         dialog.setNegativeButton("Không", null)
         dialog.show()
@@ -182,6 +221,7 @@ class ClassFragment : Fragment() {
                         } else {
                             binding.layoutEmptyCourses.visibility = View.GONE
                             classAdapter.updateList(classes)
+                            binding.recyclerViewMyCourses.visibility = View.VISIBLE
                         }
 
                         // Hiển thị trạng thái offline nếu có

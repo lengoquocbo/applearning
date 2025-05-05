@@ -52,9 +52,8 @@ class MyClassFragment : Fragment(){
         //Set up RecyclerView
         classAdapter = ClassAdapter(
             emptyList(),
-            studentId,
-            onDelete = { classId, studentId ->
-                deleteClass (classId, studentId)
+            onDelete = { it ->
+                deleteClass (it)
             }
         )
         binding.recyclerViewMyCourses.adapter = classAdapter
@@ -62,9 +61,6 @@ class MyClassFragment : Fragment(){
 
         //Gọi hàm quan sát dữ liệu
         observeViewModel()
-
-        //Gọi hàm load dữ liệu
-        viewModel.loadClasses()
 
         Log.d("DEBUG", "binding.buttonJoinCourse: ${binding.buttonJoinCourse}")
 
@@ -158,12 +154,12 @@ class MyClassFragment : Fragment(){
     }
 
 
-    fun deleteClass(ClassId: String, studentId: String) {
+    fun deleteClass(ClassId: String) {
         val dialog = AlertDialog.Builder(requireContext())
         dialog.setTitle("Rời khỏi lớp")
         dialog.setMessage("Bạn có chắc chắn muốn rời lớp này?")
         dialog.setPositiveButton("Có") { _, _ ->
-            viewModel.deleteClass(ClassId, studentId)
+            viewModel.leaveClass(ClassId)
         }
         dialog.setNegativeButton("Không", null)
         dialog.show()

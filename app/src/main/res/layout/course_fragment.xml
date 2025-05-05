@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:padding="32dp"
                 android:layout_marginTop="32dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imageViewEmptyCourses"

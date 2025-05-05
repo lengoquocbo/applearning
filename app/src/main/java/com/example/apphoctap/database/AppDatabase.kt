@@ -19,7 +19,7 @@ import com.example.apphoctap.model.TrueFalseQuestion
         TrueFalseQuestionEntity::class,
         EssayQuestionEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 

@@ -12,7 +12,7 @@ data class ClassResponse(
     val className: String,
     val description: String,
     val createAt : String,
-    val updateAt : String,
     val enrollmentKey : String
 ) : Parcelable
+
 data class CreateClassResponse(val message: String)

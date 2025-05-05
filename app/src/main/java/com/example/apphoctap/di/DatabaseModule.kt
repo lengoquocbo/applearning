@@ -27,10 +27,11 @@ object DatabaseModule {
     @Singleton
     fun provideDatbase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "app_database"
-        ).build()
+                context,
+                AppDatabase::class.java,
+                "app_database"
+            ).fallbackToDestructiveMigration(true)
+            .build()
     }
 
     @Provides fun provideDeckDao(db: AppDatabase): DeckDao = db.deckDao()

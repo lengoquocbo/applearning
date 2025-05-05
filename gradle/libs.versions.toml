@@ -17,6 +17,8 @@ retrofit = "2.9.0"
 junit = "4.13.2"
 espresso = "3.6.1"
 junitExt = "1.2.1"
+streamChatAndroidUiComponents = "5.26.0"
+streamVideoAndroidUi = "1.0.0"
 viewpager2 = "1.1.0"
 circleimageview = "3.1.0"
 
@@ -24,6 +26,7 @@ circleimageview = "3.1.0"
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+getstream-stream-video-android-core = { module = "io.getstream:stream-video-android-core", version.ref = "streamVideoAndroidUi" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "compiler" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
@@ -52,6 +55,9 @@ androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", vers
 
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+stream-chat-android-client = { module = "io.getstream:stream-chat-android-client", version.ref = "streamChatAndroidUiComponents" }
+stream-chat-android-ui-components = { module = "io.getstream:stream-chat-android-ui-components", version.ref = "streamChatAndroidUiComponents" }
+stream-video-android-ui = { module = "io.getstream:stream-video-android-ui", version.ref = "streamVideoAndroidUi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
