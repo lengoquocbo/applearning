@@ -72,7 +72,7 @@ class CreateClassFragment : Fragment() {
 
                 // Điều hướng sau khi tạo thành công (nếu dùng Navigation Component)
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, HomeFragment())
+                    .replace(R.id.frame_container, HomeFragmentTeacher())
                     .commit()
 
                 // Hoặc: findNavController().navigate(R.id.action_createClass_to_classListFragment)

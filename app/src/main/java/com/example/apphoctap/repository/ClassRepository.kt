@@ -142,6 +142,7 @@ class ClassRepository @Inject constructor(
             Log.d("LeaveClass", "Response: $response, code: ${response.code()}, body: ${response.body()}, error: ${response.errorBody()?.string()}")
 
             if (response.isSuccessful) {
+                classCacheDao.deleteClass(classId)
                 ResultAction.Success(Unit)
             } else {
                 val errorBody = response.errorBody()?.string() ?: "Lỗi không xác định"
@@ -193,6 +194,43 @@ class ClassRepository @Inject constructor(
             }
         } catch (e: Exception) {
             ResultAction.Error(NetworkError("Lỗi kết nối: ${e.message}"))
+        }
+    }
+
+    suspend fun getClassesOfTeacher(teacherId: String): List<ClassUiModel> {
+        // Bước 1: Luôn kiểm tra cache trước (Local First)
+        val cachedClasses = classCacheDao.getAllClasses()
+
+        // Bước 2: Kiểm tra nếu cache chưa quá hạn và có dữ liệu thì trả về
+        if (cachedClasses.isNotEmpty() && !shouldRefreshCache(cachedClasses)) {
+            return cachedClasses.map { it.toUiModel() }
+        }
+
+        // Bước 3: Kiểm tra kết nối mạng
+        if (!networkMonitor.isNetworkAvailable()) {
+            // Không có mạng, trả về cache dù có thể đã cũ
+            return cachedClasses.map { it.toUiModel() }
+        }
+
+        // Bước 4: Có mạng, thử lấy dữ liệu mới
+        return try {
+            val response = classApi.getClassesByTeacherID(teacherId)
+
+            if (response.isSuccessful && response.body() != null) {
+                val classes = response.body()!!
+
+                // Lưu vào cache
+                classCacheDao.insertClasses(classes.map { it.toCacheEntity() })
+
+                // Trả về dữ liệu mới
+                classes.map { it.toUiModel() }
+            } else {
+                // Lỗi API, fallback về cache
+                cachedClasses.map { it.toUiModel() }
+            }
+        } catch (e: Exception) {
+            // Lỗi mạng, fallback về cache
+            cachedClasses.map { it.toUiModel() }
         }
     }
 

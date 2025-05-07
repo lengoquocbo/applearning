@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apphoctap.R
+import com.example.apphoctap.database.entities.ClassCacheEntitiy
 import com.example.apphoctap.databinding.ItemCourseBinding
 import com.example.apphoctap.model.ClassUiModel
 
 
 class ClassAdapter (
     private var classList : List<ClassUiModel>,
+    val onClick : (ClassUiModel)-> Unit,
     val onDelete : (classId : String) -> Unit,
 ) : RecyclerView.Adapter<ClassAdapter.ClassViewHolder>() {
 
@@ -32,10 +34,14 @@ class ClassAdapter (
             tvEnrollmentkey.text = classes.enrollmentKey
             tvDescription.text = classes.description
             textViewTeacherName.text = "GV: ${classes.teacherName}"
-
-            imageViewMore.setOnClickListener{
+            // Gán sự kiện click vào toàn bộ item
+            root.setOnClickListener {
+                onClick(classes)
+            }
+            btnMore.setOnClickListener{
                 showPopupMenu(it, classes)
             }
+
         }
     }
 

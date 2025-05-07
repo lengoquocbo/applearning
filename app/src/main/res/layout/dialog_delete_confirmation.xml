@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="360dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_warning"
+            android:contentDescription="Biểu tượng cảnh báo"
+            app:tint="#FF5252" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Xác nhận xóa"
+            android:textColor="#212121"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_delete_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Bạn có chắc chắn muốn xóa lớp học này không?"
+            android:textColor="#757575"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#FF0000"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="Hủy"
+            android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#8BC34A"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="Xóa"
+            android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

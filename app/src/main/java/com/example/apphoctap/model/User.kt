@@ -94,4 +94,5 @@ sealed class NewPassState {
     data class Success(val message: String) : NewPassState()
     data class Error(val error: String) : NewPassState()
 }
-
+@Parcelize
+data class UserProfile(val username: String, val email: String, val phone: String) : Parcelable

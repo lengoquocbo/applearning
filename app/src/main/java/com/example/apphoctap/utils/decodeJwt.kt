@@ -103,4 +103,7 @@ object JwtUtils {
     fun getEmailFromToken(token: String): String? {
         return decodeJwt(token)?.optString("email")
     }
+    fun getSdtFromToken(token: String): String? {
+        return decodeJwt(token)?.optString("sdt")
+    }
 }

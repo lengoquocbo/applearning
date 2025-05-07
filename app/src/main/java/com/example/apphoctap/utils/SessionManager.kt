@@ -14,6 +14,7 @@ class SessionManager (context: Context) {
         private const val KEY_USER_NAME ="USER_NAME"
         private const val KEY_USER_EMAIL = "USER_EMAIL"
         private const val KEY_USER_ROLE = "USER_ROLE"
+        private const val KEY_SDT = "USER_SDT"
         private const val KEY_IS_LOGGED_IN = "IS_LOGGED_IN"
         private const val KEY_ROLE_ID = "ROLE_ID"
         private const val KEY_TEACHER_ID = "TEACHER_ID"
@@ -31,6 +32,8 @@ class SessionManager (context: Context) {
                 putString(KEY_USER_ID, payload.optString("userID", ""))
                 putString(KEY_USER_NAME, payload.optString("username", ""))
                 putString(KEY_USER_EMAIL, payload.optString("email", ""))
+                putString(KEY_SDT, payload.optString("sdt", ""))
+
                 putString(KEY_USER_ROLE, role) // Lưu role từ phản hồi API
                 putString(KEY_ROLE_ID, payload.optString("roleID", ""))
 
@@ -114,6 +117,11 @@ class SessionManager (context: Context) {
             putBoolean(KEY_IS_LOGGED_IN, false)
             apply()
         }
+    }
+    fun clearToken() {
+        val editor = sharedPreferences.edit()
+        editor.remove("access_token")
+        editor.apply()
     }
 
     fun isLoggedIn(): Boolean {

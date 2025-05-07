@@ -12,3 +12,25 @@ data class Student (
     val userID: String,
     val name:String,
 ) : Parcelable
+
+@Parcelize
+data class StudentRequest(
+    val email: String
+): Parcelable
+@Parcelize
+data class StudentDeleteRequest(
+    val studentID : String,
+): Parcelable
+
+@Parcelize
+data class StudentResponse(
+    val classID: String,
+    val studentID: String,
+    val studentname: String,
+) : Parcelable
+
+@Parcelize
+data class AddStudentRequest(
+    val email: String,
+    val classID: String
+): Parcelable

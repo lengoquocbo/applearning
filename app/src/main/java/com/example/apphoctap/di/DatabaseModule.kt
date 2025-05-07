@@ -25,7 +25,7 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideDatbase(@ApplicationContext context: Context): AppDatabase {
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
                 context,
                 AppDatabase::class.java,
@@ -33,6 +33,7 @@ object DatabaseModule {
             ).fallbackToDestructiveMigration(true)
             .build()
     }
+
 
     @Provides fun provideDeckDao(db: AppDatabase): DeckDao = db.deckDao()
     @Provides fun provideQuestionFileDao(db: AppDatabase): QuestionFileDao = db.fileDao()

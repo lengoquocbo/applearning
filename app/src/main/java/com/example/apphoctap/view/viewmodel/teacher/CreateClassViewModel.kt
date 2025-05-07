@@ -36,7 +36,7 @@ class CreateClassViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val response = repository.CreateClass(newClass)
+                val response = repository.createClass(newClass)
                 if (response.isSuccessful) {
                     val body = response.body()
                     _createClassResult.value = Result.success(body?.message ?: "Tạo lớp thành công")
@@ -54,4 +54,3 @@ class CreateClassViewModel : ViewModel() {
         return sdf.format(Date())
     }
 }
-

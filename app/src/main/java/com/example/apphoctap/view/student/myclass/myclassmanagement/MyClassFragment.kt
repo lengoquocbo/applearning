@@ -9,16 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.apphoctap.R
 import com.example.apphoctap.databinding.CourseFragmentBinding
 import com.example.apphoctap.utils.JoinClassState
 import com.example.apphoctap.utils.PreferenceHelper
 import com.example.apphoctap.utils.UiState
 import com.example.apphoctap.view.student.myclass.ClassAdapter
 import com.example.apphoctap.view.student.myclass.ClassViewModel
+import com.example.apphoctap.view.teacher.MyClassDetailFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,8 +54,23 @@ class MyClassFragment : Fragment(){
         val studentId = prefHelper.getString("studentID")
         //Set up RecyclerView
         classAdapter = ClassAdapter(
-            emptyList(),
-            onDelete = { it ->
+            classList = emptyList(),
+            onClick = {item->
+                val MyClassDetailFragment= MyClassDetailFragment().apply {
+                    arguments = bundleOf(
+                        "classID" to item.classId,
+                        "className" to item.className,
+                        "teacherName" to item.teacherName,
+                        "enrollmentKey" to item.enrollmentKey
+                    )
+                }
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, MyClassDetailFragment)
+                    .addToBackStack(null)
+                    .commit()
+
+            },
+            onDelete = {
                 deleteClass (it)
             }
         )

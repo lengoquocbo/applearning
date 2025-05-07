@@ -7,7 +7,7 @@ import com.example.apphoctap.R
 import com.example.apphoctap.databinding.ActivityStudentBinding
 import com.example.apphoctap.view.student.myclass.ClassFragment
 import com.example.apphoctap.view.student.document.DocumentFragment
-import com.example.apphoctap.view.student.profile.ProfileFragment
+import com.example.apphoctap.view.teacher.ProfileFragmentStudent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +35,7 @@ class StudentActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.navigation_profile -> {
-                    loadFragment(ProfileFragment())
+                    loadFragment(ProfileFragmentStudent())
                     return@setOnItemSelectedListener true
                 }
                 else -> return@setOnItemSelectedListener false

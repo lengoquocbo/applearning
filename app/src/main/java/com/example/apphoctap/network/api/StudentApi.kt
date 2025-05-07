@@ -1,6 +1,10 @@
 package com.example.apphoctap.network.api
 
+import com.example.apphoctap.model.AddStudentRequest
+import com.example.apphoctap.model.ClassResponse
 import com.example.apphoctap.model.Student
+import com.example.apphoctap.model.StudentRequest
+import com.example.apphoctap.model.StudentResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -14,11 +18,12 @@ interface StudentApi {
     @GET("students")
     suspend fun getAllStudents(): List<Student>
 
-    @GET("students/{id}")
-    suspend fun getStudentById(@Path("id") studentId: String): Student
+    @DELETE("students/delete/{studentID}")
+    suspend fun deletestudents(@Path("studentID") studentID: String): Response<String>
 
-    @POST("students")
-    suspend fun createStudent(@Body student: Student): Response<Student>
+
+    @POST("students/add")
+    suspend fun addStudentByEmail(@Body addStudentRequest: AddStudentRequest): Response<StudentResponse>
 
     @PUT("students/{id}")
     suspend fun updateStudent(@Path("id") studentId: String, @Body student: Student): Response<Student>

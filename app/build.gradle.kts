@@ -82,17 +82,17 @@ dependencies {
     implementation(libs.androidx.viewpager2)
 
     implementation(libs.glide) // Thêm Glide vào dependencies
-    annotationProcessor(libs.compiler)
+//    annotationProcessor(libs.compiler)
 
-    implementation ("io.getstream:stream-chat-android-client:5.11.10")
-
-    // UI Components từ Stream Chat SDK
-    implementation ("io.getstream:stream-chat-android-ui-components:5.11.10")
-    // Stream Video SDK (View-based)
-    implementation(libs.stream.video.android.ui)
-
-    // Stream Video SDK - Core client
-    implementation(libs.getstream.stream.video.android.core)
+//    implementation ("io.getstream:stream-chat-android-client:5.11.10")
+//
+//    // UI Components từ Stream Chat SDK
+//    implementation ("io.getstream:stream-chat-android-ui-components:5.11.10")
+//    // Stream Video SDK (View-based)
+//    implementation(libs.stream.video.android.ui)
+//
+//    // Stream Video SDK - Core client
+//    implementation(libs.getstream.stream.video.android.core)
 
 }
 

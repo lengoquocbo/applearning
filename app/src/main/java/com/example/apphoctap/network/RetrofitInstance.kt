@@ -2,14 +2,16 @@ package com.example.apphoctap.network
 
 import com.example.apphoctap.network.api.AuthApi
 import com.example.apphoctap.network.api.ClassApi
+import com.example.apphoctap.network.api.StudentApi
 import com.example.apphoctap.repository.AuthRepository
 import com.example.apphoctap.repository.ClassesRepository
+import com.example.apphoctap.repository.StudentRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    private const val BASE_URL = "http://192.168.1.109:8080/"
+    private const val BASE_URL = "http://192.168.1.5:8080/"
 
     private val retrofit by lazy {
         Retrofit.Builder()
@@ -31,5 +33,10 @@ object RetrofitInstance {
   val classRepository: ClassesRepository by lazy {
        ClassesRepository(classesApi)
  }
-
+    val studentApi: StudentApi by lazy {
+        retrofit.create(StudentApi::class.java)
+    }
+    val studentRepositoy: StudentRepository by lazy {
+        StudentRepository(studentApi)
+    }
 }

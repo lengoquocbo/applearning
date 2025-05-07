@@ -31,7 +31,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="12dp"
-            android:background="@drawable/circle_gradient_purple"
+            android:background="@drawable/bg_primary_button"
             android:padding="8dp"
             android:src="@drawable/ic_class"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -97,9 +97,9 @@
 
         <!-- Nút menu tùy chọn -->
         <ImageView
-            android:id="@+id/imageViewMore"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:id="@+id/btnMore"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_more"
             app:layout_constraintBottom_toBottomOf="parent"

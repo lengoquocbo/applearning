@@ -27,4 +27,11 @@ interface ClassCacheDao {
     @Query("SELECT * FROM class_cache ORDER BY lastAccessTime DESC LIMIT :limit")
     suspend fun getRecentlyAccessedClasses(limit: Int = 10): List<ClassCacheEntitiy>
 
+    @Query("SELECT * FROM class_cache WHERE teacherName = :teacherId")
+    fun getClassesByTeacherId(teacherId: String): List<ClassCacheEntitiy>
+
+
+    @Query("DELETE FROM class_cache")
+    suspend fun clearAll()
+
 }
