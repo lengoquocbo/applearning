@@ -56,5 +56,7 @@
     <string name="tab_discussions">Chat</string>
     <string name="tab_video_calls">Video Call</string>
     <string name="tab_materials">Tài liệu</string>
-    <string name="apiKey">dwxfej8j8b23</string>
+    <string name="apiKey">5q6ebvvwua3p</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_message_teacher">MessageTeacherActivity</string>
 </resources>

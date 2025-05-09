@@ -18,7 +18,7 @@ import com.example.apphoctap.R
 import com.example.apphoctap.databinding.CourseFragmentBinding
 import com.example.apphoctap.utils.JoinClassState
 import com.example.apphoctap.utils.UiState
-import com.example.apphoctap.view.teacher.MyClassDetailFragment
+import com.example.apphoctap.view.classdetail.ClassDetailFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,7 +49,8 @@ class ClassFragment : Fragment() {
         classAdapter = ClassAdapter(
             classList = emptyList(),
             onClick = {item->
-                val MyClassDetailFragment= MyClassDetailFragment().apply {
+                viewModel.onClassClicked(item.classId)
+                val myClassDetailFragment = ClassDetailFragment().apply {
                     arguments = bundleOf(
                         "classID" to item.classId,
                         "className" to item.className,
@@ -58,7 +59,7 @@ class ClassFragment : Fragment() {
                     )
             }
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, MyClassDetailFragment)
+                    .replace(R.id.frame_container_student, myClassDetailFragment)
                     .addToBackStack(null)
                     .commit()
 
@@ -168,7 +169,6 @@ class ClassFragment : Fragment() {
         }
     }
 
-
     private fun observedeleteViewModel() {
         // Quan sát trạng thái rời lớp học
         viewModel.leaveClassState.observe(viewLifecycleOwner) { state ->
@@ -187,7 +187,7 @@ class ClassFragment : Fragment() {
                         Snackbar.LENGTH_SHORT
                     ).show()
                     // Cập nhật danh sách lớp học nếu cần
-                    viewModel.loadClasses()
+
                 }
                 is LeaveClassState.Error -> {
                     binding.progressBar.isVisible = false
@@ -224,15 +224,15 @@ class ClassFragment : Fragment() {
         viewModel.classes.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is UiState.Loading -> {
-                    binding.progressBarLoading.visibility = View.VISIBLE
+                    binding.shimmerContainer.visibility = View.VISIBLE
                     binding.recyclerViewMyCourses.visibility = View.GONE
                     binding.textViewError.visibility = View.GONE
                 }
                 is UiState.Success -> {
-                    binding.progressBarLoading.visibility = View.GONE
+                    binding.shimmerContainer.visibility = View.GONE
                     binding.textViewError.visibility = View.GONE
 
-                    resource.data?.let { classes ->
+                    resource.data.let { classes ->
                         if (classes.isEmpty()) {
                             binding.layoutEmptyCourses.visibility = View.VISIBLE
                             binding.recyclerViewMyCourses.visibility = View.GONE
@@ -252,7 +252,7 @@ class ClassFragment : Fragment() {
                     }
                 }
                 is UiState.Error -> {
-                    binding.progressBarLoading.visibility = View.GONE
+                    binding.shimmerContainer.visibility = View.GONE
                     binding.textViewError.visibility = View.VISIBLE
                     binding.textViewError.text = resource.message ?: "Unknown error"
                 }

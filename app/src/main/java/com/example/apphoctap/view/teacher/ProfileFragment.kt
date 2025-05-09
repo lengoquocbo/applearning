@@ -20,10 +20,16 @@ import com.example.apphoctap.view.LoginActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
+import io.getstream.chat.android.client.ChatClient
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private var _binding: ProfileFragmentBinding? = null
     private val binding get() = _binding!!
+
+    @Inject lateinit var chatClient : ChatClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,6 +88,14 @@ class ProfileFragment : Fragment() {
         binding.btnLogOut.setOnClickListener {
             // 1. Clear local token
             SessionManager(requireContext()).clearSession()
+
+            chatClient.disconnect(flushPersistence = false).enqueue { result ->
+                if (result.isSuccess) {
+                    Snackbar.make(binding.root, "Đăng xuất thành công", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(binding.root, "Đăng xuất không thành công", Snackbar.LENGTH_SHORT).show()
+                }
+            }
 
             // 2. Show Snackbar
             Snackbar.make(binding.root, "Đăng xuất thành công", Snackbar.LENGTH_SHORT).show()

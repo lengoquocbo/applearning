@@ -18,16 +18,18 @@ import com.example.apphoctap.utils.SessionManager
 import com.example.apphoctap.utils.UiState
 import com.example.apphoctap.utils.UnauthorizedError
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.models.Channel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-@HiltViewModel()
+@HiltViewModel
 class ClassViewModel @Inject constructor(
     private val classRepository: ClassRepository,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
 ) : ViewModel() {
 
     private val _classes = MutableLiveData<UiState<List<ClassUiModel>>>(UiState.Loading)
@@ -96,6 +98,12 @@ class ClassViewModel @Inject constructor(
                 }
                 is ResultAction.Loading -> {}
             }
+        }
+    }
+
+    fun onClassClicked(classId: String) {
+        viewModelScope.launch {
+            classRepository.updateClassAccessTime(classId)
         }
     }
 

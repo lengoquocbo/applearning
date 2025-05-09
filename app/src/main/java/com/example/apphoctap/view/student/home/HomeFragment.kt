@@ -6,15 +6,18 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.apphoctap.R
 import com.example.apphoctap.databinding.FragmentDashboardStudentBinding
-import com.example.apphoctap.utils.UiState
+    import com.example.apphoctap.utils.UiState
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.apphoctap.utils.SessionManager
+import com.example.apphoctap.view.classdetail.ClassDetailFragment
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -22,6 +25,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentDashboardStudentBinding? = null
     private val binding get() = _binding!!
     private val viewModel : HomeViewModel by viewModels()
+    private lateinit var adapter : NearbyClassAdapter
+
 
     private lateinit var bannerAdapter: BannerAdapter
     private val bannerImages = listOf(
@@ -73,11 +78,11 @@ class HomeFragment : Fragment() {
         
         binding.tvGreeting.text ="${binding.tvGreeting.text} $username"
 
+        //Khởi tạo adapter cho banner
         bannerAdapter = BannerAdapter(bannerImages)
         binding.promotionSlider.adapter = bannerAdapter
 
         TabLayoutMediator(binding.sliderIndicator, binding.promotionSlider) { _, _ -> }.attach()
-
         binding.promotionSlider.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 currentPage = position
@@ -87,7 +92,6 @@ class HomeFragment : Fragment() {
                 isScrolling = state != ViewPager2.SCROLL_STATE_IDLE
             }
         })
-
         bannerRunnable = object : Runnable {
             override fun run() {
                 if (!isScrolling && bannerImages.isNotEmpty()) {
@@ -97,26 +101,62 @@ class HomeFragment : Fragment() {
                 handler.postDelayed(this, scrollDelay)
             }
         }
-
         handler.postDelayed(bannerRunnable, scrollDelay)
 
 
+        adapter = NearbyClassAdapter(
+            emptyList(),
+            onClick = {item->
+                viewModel.onClassClicked(item.classId)
+                val myClassDetailFragment = ClassDetailFragment().apply {
+                    arguments = bundleOf(
+                        "classID" to item.classId,
+                        "className" to item.className,
+                        "teacherName" to item.teacherName,
+                        "enrollmentKey" to item.enrollmentKey
+                    )
+                }
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.frame_container_student, myClassDetailFragment)
+                    .addToBackStack(null)
+                    .commit()
+
+            }
+        )
+
+        binding.rvNearbyClasses.adapter = adapter
+        binding.rvNearbyClasses.layoutManager = LinearLayoutManager(requireContext())
+
+        //Load nearby class
+        viewModel.loadClasses()
+
+        //quan sát dữ liệu
         observeViewModel()
     }
 
+    //quan sát dữ liệu class
     private fun observeViewModel() {
         viewModel.classes.observe(viewLifecycleOwner){ resource ->
             when(resource){
                 is UiState.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.shimmerContainer.visibility = View.VISIBLE
                     binding.rvNearbyClasses.visibility = View.GONE
                 }
                 is UiState.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.rvNearbyClasses.visibility = View.VISIBLE
+                    binding.shimmerContainer.visibility = View.GONE
+                    //kiểm tra hiêển thị giao diện
+                    resource.data.let { classes ->
+                        if (classes.isEmpty()) {
+                            binding.layoutEmptyCourses.visibility = View.VISIBLE
+                            binding.rvNearbyClasses.visibility = View.GONE
+                        } else {
+                            binding.layoutEmptyCourses.visibility = View.GONE
+                            binding.rvNearbyClasses.visibility = View.VISIBLE
+                        }
+                    }
                 }
                 is UiState.Error -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.shimmerContainer.visibility = View.GONE
                     binding.rvNearbyClasses.visibility = View.GONE
                 }
             }

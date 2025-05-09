@@ -3,6 +3,7 @@ package com.example.apphoctap.network.api
 import com.example.apphoctap.model.ClassResponse
 import com.example.apphoctap.model.CreateClassRequest
 import com.example.apphoctap.model.CreateClassResponse
+import com.example.apphoctap.model.EnrollmentKeyRessponse
 import com.example.apphoctap.model.ExposedClass
 import com.example.apphoctap.model.StudentResponse
 import retrofit2.Response
@@ -31,7 +32,7 @@ interface ClassApi {
     suspend fun getStudentByclassID(@Path("classID") classID: String): Response<List<StudentResponse>>
 
     @DELETE("class/delete/{classID}")
-    suspend fun deleteClassTeacher(@Path("classID") ClassID: String): Response<String>
+    suspend fun deleteClassTeacher(@Path("classID") ClassID: String): Response<EnrollmentKeyRessponse>
 
     @GET("classes/{id}")
     suspend fun getClass(@Path("id") classId: String): Response<ClassResponse>

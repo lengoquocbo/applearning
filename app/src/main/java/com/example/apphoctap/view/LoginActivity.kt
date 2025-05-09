@@ -2,6 +2,7 @@ package com.example.apphoctap.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,17 +11,23 @@ import com.example.apphoctap.databinding.ActivityLoginBinding
 import com.example.apphoctap.model.ExposedUser
 import com.example.apphoctap.model.ExposedUserLogin
 import com.example.apphoctap.model.LoginState
-import com.example.apphoctap.utils.JwtUtils
 import com.example.apphoctap.utils.SessionManager
 import com.example.apphoctap.view.student.StudentActivity
 import com.example.apphoctap.view.teacher.TeacherActivity
 import com.example.apphoctap.view.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
+
+    @Inject lateinit var chatClient: ChatClient
     private lateinit var binding: ActivityLoginBinding
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var sessionManager: SessionManager
@@ -75,7 +82,8 @@ class LoginActivity : AppCompatActivity() {
                         sessionManager.saveUserSession(
                             state.token,
                             state.refreshToken,
-                            state.user.role
+                            state.user.role,
+                            state.chatToken
                         )
 
                         navigateBasedOnRole(state.user.role, state.user)
@@ -106,6 +114,37 @@ class LoginActivity : AppCompatActivity() {
         // Lấy teacherID và studentID từ SessionManager
         val teacherID = sessionManager.getTeacherID()
         val studentID = sessionManager.getStudentID()
+
+
+        val userChat = sessionManager.getUserChat()
+        val chatToken = sessionManager.getChatToken()
+
+        Log.d("Chat token 1 3 5 7 8","chattoken $chatToken")
+        if (!chatToken.isNullOrEmpty()) {
+            val chatUser = User(
+                id = userChat.id,
+                name = userChat.name,
+                image = userChat.image,
+                role = userChat.role,
+                extraData = mutableMapOf(
+                    "email" to userChat.email,
+                )
+            )
+
+            Log.d("User chat","userchat $chatUser" )
+
+
+            chatClient.connectUser(chatUser, chatToken).enqueue { result ->
+                if (result.isSuccess) {
+                    Log.d("Chat", "Connected to Stream Chat successfully")
+                } else {
+                    Log.e("Chat", "Failed to connect: ${result.errorOrNull()}")
+                }
+            }
+        } else (
+            Log.d("fail", "$chatToken")
+        )
+
 
         intent.putExtra("userID", user.userID)
         intent.putExtra("username", user.username)

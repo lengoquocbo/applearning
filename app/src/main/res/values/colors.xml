@@ -26,4 +26,5 @@
     <color name="text_color_secondary">#757575</color>
     <color name="divider_color">#EEEEEE</color>
     <color name="course_color_default">#1976D2</color>
+    <color name="shimmer_placeholder">#DDDDDD</color>
 </resources>

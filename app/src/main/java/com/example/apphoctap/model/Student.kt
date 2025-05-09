@@ -30,7 +30,29 @@ data class StudentResponse(
 ) : Parcelable
 
 @Parcelize
+data class StudentResponseWithEnrollMentKey(
+    val userId : String,
+    val classID: String,
+    val studentID: String,
+    val studentname: String,
+    val enrollmentKey: String
+) : Parcelable
+@Parcelize
 data class AddStudentRequest(
     val email: String,
     val classID: String
 ): Parcelable
+
+
+@Parcelize
+data class DeleteStudentRequest(
+    val studentID: String,
+    val classID: String
+):Parcelable
+
+@Parcelize
+data class DeleteStudentResponse(
+    val userId : String,
+    val enrollmentKey: String,
+    val message : String
+) : Parcelable

@@ -1,6 +1,6 @@
 package com.example.apphoctap.view.teacher
 
-import CreateClassViewModel
+import com.example.apphoctap.view.viewmodel.teacher.CreateClassViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.apphoctap.R
 import com.example.apphoctap.databinding.FragmentTeacherCreateclassBinding
 import com.example.apphoctap.utils.SessionManager
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CreateClassFragment : Fragment() {
 
     private var _binding: FragmentTeacherCreateclassBinding? = null
@@ -72,7 +73,7 @@ class CreateClassFragment : Fragment() {
 
                 // Điều hướng sau khi tạo thành công (nếu dùng Navigation Component)
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, HomeFragmentTeacher())
+                    .replace(R.id.frame_container_teacher, HomeFragmentTeacher())
                     .commit()
 
                 // Hoặc: findNavController().navigate(R.id.action_createClass_to_classListFragment)

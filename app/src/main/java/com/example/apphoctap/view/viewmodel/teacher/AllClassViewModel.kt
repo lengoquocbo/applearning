@@ -1,14 +1,21 @@
 package com.example.apphoctap.view.viewmodel.teacher
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apphoctap.database.entities.ClassCacheEntitiy
 import com.example.apphoctap.network.RetrofitInstance
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.getstream.chat.android.client.ChatClient
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AllClassViewModel : ViewModel() {
+@HiltViewModel
+class AllClassViewModel @Inject constructor(
+        private val chatClient: ChatClient
+) : ViewModel() {
     private val repository = RetrofitInstance.classRepository
 
     private val _classList = MutableLiveData<Result<List<ClassCacheEntitiy>>>()
@@ -48,6 +55,17 @@ class AllClassViewModel : ViewModel() {
                 val response = repository.deleteClassTeacher(classID)
                 if (response.isSuccessful) {
                     _deleteResult.postValue(Result.success("Xóa thành công"))
+                    val enrollMentKey = response.body()!!.enrollmentKey
+                    val channelClient = chatClient.channel("messaging", enrollMentKey)
+
+                    channelClient.delete().enqueue { result ->
+                        if (result is io.getstream.result.Result.Success) {
+                            val channel = result.value
+                            Log.d("channel", "Channel deleted successfully: ${channel.name}")
+                        } else {
+                            Log.d("channel", "Lỗi khi xóa channel: ${result.isFailure}")
+                        }
+                    }
                 } else {
                     _deleteResult.postValue(Result.failure(Exception("Xóa thất bại: ${response.code()}")))
                 }

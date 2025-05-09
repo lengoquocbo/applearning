@@ -143,6 +143,27 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_course" />
 
+            <LinearLayout
+                android:id="@+id/shimmerContainer"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- Thêm nhiều shimmer items -->
+                <include layout="@layout/item_course_shimmer" />
+                <include layout="@layout/item_course_shimmer" />
+                <include layout="@layout/item_course_shimmer" />
+                <include layout="@layout/item_course_shimmer" />
+                <include layout="@layout/item_course_shimmer" />
+                <include layout="@layout/item_course_shimmer" />
+                <include layout="@layout/item_course_shimmer" />
+                <include layout="@layout/item_course_shimmer" />
+
+            </LinearLayout>
+
+
             <!-- Empty State with improved design -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutEmptyCourses"
@@ -187,14 +208,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ProgressBar
-                android:id="@+id/progressBarLoading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="32dp"
-                android:visibility="gone" />
 
             <!-- Error Message -->
             <TextView

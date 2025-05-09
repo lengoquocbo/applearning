@@ -5,3 +5,4 @@ sealed class ResultAction<out T> {
     data class Error(val error: ErrorType) : ResultAction<Nothing>()
     object Loading : ResultAction<Nothing>() // nếu bạn muốn hỗ trợ loading
 }
+

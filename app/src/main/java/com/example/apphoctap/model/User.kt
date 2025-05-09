@@ -28,6 +28,13 @@ data class LoginResponse(
     val role: String
 )
 
+data class LoginResponse2token(
+    val token: String,
+    val chattoken : String,
+    val refreshToken: String,
+    val role: String
+)
+
 
 data class RefreshTokenRequest(
     @SerializedName("refreshToken")
@@ -42,6 +49,7 @@ sealed class LoginState {
         val token: String,
         val user: ExposedUser,
         val refreshToken: String,
+        val chatToken: String,
         val message: String
     ) : LoginState()
 

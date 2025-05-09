@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -22,10 +21,12 @@ import com.example.apphoctap.databinding.FragmentManageListclassBinding
 import com.example.apphoctap.utils.JwtUtils
 import com.example.apphoctap.utils.SessionManager
 import com.example.apphoctap.view.teacher.Adapter.AllClassAdapter
-import com.example.apphoctap.view.teacher.ClassDetailFragment
+import com.example.apphoctap.view.classdetail.ClassDetailFragment
 import com.example.apphoctap.view.teacher.CreateClassFragment
 import com.example.apphoctap.view.viewmodel.teacher.AllClassViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AllClassFragment : Fragment() {
 
     private var _binding: FragmentManageListclassBinding? = null
@@ -70,7 +71,7 @@ class AllClassFragment : Fragment() {
                 }
 
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, classDetailFragment)
+                    .replace(R.id.frame_container_teacher, classDetailFragment)
                     .addToBackStack(null)
                     .commit()
             },
@@ -84,7 +85,7 @@ class AllClassFragment : Fragment() {
                 }
 
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, editFragment)
+                    .replace(R.id.frame_container_teacher, editFragment)
                     .addToBackStack(null)
                     .commit()
             },
@@ -131,14 +132,14 @@ class AllClassFragment : Fragment() {
     private fun setupClickListeners() {
         binding.fabAddClass.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_container, CreateClassFragment())
+                .replace(R.id.frame_container_teacher, CreateClassFragment())
                 .addToBackStack(null)
                 .commit()
         }
 
         binding.btnCreateFirstClass.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_container, CreateClassFragment())
+                .replace(R.id.frame_container_teacher, CreateClassFragment())
                 .addToBackStack(null)
                 .commit()
 

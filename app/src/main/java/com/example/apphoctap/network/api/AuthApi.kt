@@ -7,6 +7,7 @@ import com.example.apphoctap.model.ExposedUser
 import com.example.apphoctap.model.ExposedUserLogin
 import com.example.apphoctap.model.Exposedforget
 import com.example.apphoctap.model.LoginResponse
+import com.example.apphoctap.model.LoginResponse2token
 import com.example.apphoctap.model.RefreshTokenRequest
 import com.example.apphoctap.model.ResponseNewPass
 import com.example.apphoctap.model.forgetRespone

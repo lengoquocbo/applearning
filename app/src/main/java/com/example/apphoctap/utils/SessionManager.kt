@@ -3,6 +3,7 @@ package com.example.apphoctap.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.apphoctap.model.ExposedUser
+import com.example.apphoctap.model.UserForChatVideo
 
 class SessionManager (context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
@@ -19,9 +20,10 @@ class SessionManager (context: Context) {
         private const val KEY_ROLE_ID = "ROLE_ID"
         private const val KEY_TEACHER_ID = "TEACHER_ID"
         private const val KEY_STUDENT_ID = "STUDENT_ID"
+        private const val KEY_CHAT_CLIENT_TOKEN = "CHAT_CLIENT"
     }
 
-    fun saveUserSession(accessToken: String, refreshToken: String, role: String) {
+    fun saveUserSession(accessToken: String, refreshToken: String, role: String, chatToken : String) {
         // Giải mã token để lấy thông tin
         val payload = JwtUtils.decodeJwt(accessToken)
 
@@ -36,6 +38,7 @@ class SessionManager (context: Context) {
 
                 putString(KEY_USER_ROLE, role) // Lưu role từ phản hồi API
                 putString(KEY_ROLE_ID, payload.optString("roleID", ""))
+                putString(KEY_CHAT_CLIENT_TOKEN, chatToken)
 
                 // Lưu teacherID và studentID từ token (nếu có)
                 if (payload.has("teacherID")) {
@@ -96,6 +99,20 @@ class SessionManager (context: Context) {
         )
     }
 
+    fun getChatToken(): String? {
+        return sharedPreferences.getString(KEY_CHAT_CLIENT_TOKEN, null)
+    }
+
+    fun getUserChat() : UserForChatVideo{
+        return UserForChatVideo(
+            id = sharedPreferences.getString(KEY_USER_ID, "") ?: "",
+            email = sharedPreferences.getString(KEY_USER_EMAIL, "") ?: "",
+            name = sharedPreferences.getString(KEY_USER_NAME, "") ?: "",
+            image = "",
+            role = sharedPreferences.getString(KEY_USER_ROLE, "") ?: ""
+        )
+    }
+
     fun getUserRole(): String {
         return sharedPreferences.getString(KEY_USER_ROLE, "") ?: ""
     }
@@ -131,5 +148,9 @@ class SessionManager (context: Context) {
     fun hasValidToken(): Boolean {
         val token = getAccessToken()
         return !token.isNullOrEmpty() && !JwtUtils.isTokenExpired(token)
+    }
+
+    fun getUserId(): String? {
+        return sharedPreferences.getString(KEY_USER_ID, "")
     }
 }

@@ -6,6 +6,7 @@ import com.example.apphoctap.database.entities.ClassCacheEntitiy
 import com.example.apphoctap.model.ClassUiModel
 import com.example.apphoctap.network.api.ClassApi
 import com.example.apphoctap.model.ClassResponse
+import com.example.apphoctap.model.DeleteStudentResponse
 import com.example.apphoctap.network.api.ClassStudentApi
 import com.example.apphoctap.utils.AccessDeniedError
 import com.example.apphoctap.utils.ApiError
@@ -14,16 +15,20 @@ import com.example.apphoctap.utils.NetworkError
 import com.example.apphoctap.utils.NetworkMonitor
 import com.example.apphoctap.utils.NotFoundError
 import com.example.apphoctap.utils.ResultAction
+import com.example.apphoctap.utils.SessionManager
 import com.example.apphoctap.utils.UiState
 import com.example.apphoctap.utils.UnauthorizedError
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.models.Channel
 import javax.inject.Inject
-
 
 class ClassRepository @Inject constructor(
     private val classCacheDao: ClassCacheDao,
     private val classApi: ClassApi,
     private val networkMonitor: NetworkMonitor,
-    private val classStudentApi: ClassStudentApi
+    private val classStudentApi: ClassStudentApi,
+    private val sessionManager: SessionManager,
+    private val chatClient : ChatClient
 ) {
 
     // Hàm chuyển đổi từ ClassResponse sang UI model
@@ -62,59 +67,74 @@ class ClassRepository @Inject constructor(
         )
     }
 
+    private fun ClassResponse.toCacheEntityWhenCreate(): ClassCacheEntitiy {
+        return ClassCacheEntitiy(
+            classId = classID,
+            className = className,
+            teacherName = teacherName,
+            description = description,
+            enrollmentKey = enrollmentKey,
+            lastSyncTime = System.currentTimeMillis(),
+            lastAccessTime = System.currentTimeMillis()
+        )
+    }
+
     suspend fun getNearbyAccessClasses() : List<ClassUiModel>{
         val cachedClasses = classCacheDao.getRecentlyAccessedClasses()
         return cachedClasses.map { it.toUiModel() }
     }
 
     suspend fun getClasses(): List<ClassUiModel> {
-        Log.d("ClassRepository", "Lấy dữ liệu từ API")
-        // Bước 1: Luôn kiểm tra cache trước (Local First)
+        Log.d("ClassRepository", "Lấy dữ liệu từ cache (cho fallback nếu cần)")
+
         val cachedClasses = classCacheDao.getAllClasses()
 
-        // Bước 2: Kiểm tra nếu cache chưa quá hạn và có dữ liệu thì trả về
-        if (cachedClasses.isNotEmpty() && !shouldRefreshCache(cachedClasses)) {
+        if (!networkMonitor.isNetworkAvailable()) {
+            Log.d("ClassRepository", "Không có mạng, dùng cache (dù cũ)")
             return cachedClasses.map { it.toUiModel() }
         }
 
-        // Bước 3: Kiểm tra kết nối mạng
-        if (!networkMonitor.isNetworkAvailable()) {
-            Log.d("ClassRepository", "Không có kết nối mạng")
-            // Không có mạng, trả về cache dù có thể đã cũ
-            return cachedClasses.map { it.toUiModel()
-
-            }
-        }
-
-        // Bước 4: Có mạng, thử lấy dữ liệu mới
+        // Bỏ qua cache, LUÔN LẤY từ API nếu có mạng
         return try {
-            Log.d("ClassRepository", "Lấy dữ liệu mới từ API")
-
+            Log.d("ClassRepository", "Gọi API để lấy dữ liệu mới")
             val response = classApi.getClassByStudentId()
-            Log.d("responseclassAPI", "response: $response")
 
             if (response.isSuccessful && response.body() != null) {
-                val classes = response.body()!!
+                val classesFromApi = response.body()!!
 
-                Log.d("responseabc", "response: $classes")
+                // --- Đồng bộ cache xoá các lớp không còn trên server ---
+                /*
+                    Ví dụ :
+                    cachedClassIds = setOf("classA", "classB", "classC")
+                    apiClassIds = setOf("classA", "classC")
+                    deletedClassIds = cachedClassIds - apiClassIds
+                                    = {"classA", "classB", "classC"} - {"classA", "classC"}
+                                    = {"classB"}
+                 */
+                val apiClassIds = classesFromApi.map { it.classID }.toSet()
+                val cachedClassIds = cachedClasses.map { it.classId }.toSet()
+                val deletedClassIds = cachedClassIds - apiClassIds
 
-                // Lưu vào cache
-                classCacheDao.insertClasses(classes.map { it.toCacheEntity() })
+                if (deletedClassIds.isNotEmpty()) {
+                    classCacheDao.deleteClassesByIds(deletedClassIds.toList())
+                }
 
-                // Trả về dữ liệu mới
-                classes.map { it.toUiModel() }
+                // --- Cập nhật cache ---
+                classCacheDao.insertClasses(
+                    classesFromApi.map { it.toCacheEntity() }
+                )
 
+                classesFromApi.map { it.toUiModel() }
             } else {
-                // Lỗi API, fallback về cache
-                Log.d("ClassRepository", "Lỗi API: ${response.code()}")
+                Log.d("ClassRepository", "API lỗi: ${response.code()}, fallback cache")
                 cachedClasses.map { it.toUiModel() }
             }
         } catch (e: Exception) {
-            // Lỗi mạng, fallback về cache
-            Log.d("ClassRepository", "Lỗi mạng: ${e.message}")
+            Log.d("ClassRepository", "Lỗi mạng/API: ${e.message}, fallback cache")
             cachedClasses.map { it.toUiModel() }
         }
     }
+
 
     /**
      * Kiểm tra xem cache có cần refresh hay không
@@ -137,12 +157,22 @@ class ClassRepository @Inject constructor(
 
     suspend fun leaveClass(classId: String): ResultAction<Unit> {
         return try {
-            Log.d("LeaveClass", "Calling leaveClass with classId: $classId")
-            val response = classStudentApi.leaveClass(classId)
-            Log.d("LeaveClass", "Response: $response, code: ${response.code()}, body: ${response.body()}, error: ${response.errorBody()?.string()}")
-
+            // ở đây cần lấy ra enrolment key trong kết quả tra về
+            val response  = classStudentApi.leaveClass(classId)
+            Log.d("LeaveClassRepository", "Response: $response")
+            val enrollmentKey = response.body()!!.enrollmentKey
             if (response.isSuccessful) {
                 classCacheDao.deleteClass(classId)
+                val userId = sessionManager.getUserId().toString()
+                val channelClient = chatClient.channel("messaging", enrollmentKey)
+                channelClient.removeMembers(listOf(userId)).enqueue { result ->
+                    if (result is io.getstream.result.Result.Success) {
+                        val channel: Channel = result.value
+                        Log.d("Delete member", "Học sinh hiện có ${channel.members}")
+                    } else {
+                        Log.d("Delete member", "Lỗi khi xóa member: ${result.isFailure}")
+                    }
+                }
                 ResultAction.Success(Unit)
             } else {
                 val errorBody = response.errorBody()?.string() ?: "Lỗi không xác định"
@@ -172,20 +202,26 @@ class ClassRepository @Inject constructor(
         }
 
         return try{
-            Log.d("response", "response: $enrollmentKey")
             val response = classApi.getClassByEnrollmentKey(enrollmentKey)
-            Log.d("response", "response: $response")
             if (response.isSuccessful && response.body() != null){
                 val classResponse : ClassResponse = response.body()!!
-                Log.d("responsenewclass1", "response: $classResponse")
-                classCacheDao.insertClass(classResponse.toCacheEntity())
-                Log.d("responsenewclass2", "response: $classResponse")
+                classCacheDao.insertClass(classResponse.toCacheEntityWhenCreate())
                 classStudentApi.addStudentToClass(classResponse.classID)
-                Log.d("responsenewclass3", "response: $classResponse")
+
+                val userId = sessionManager.getUserId().toString()
+                val channelClient = chatClient.channel("messaging", channelId = enrollmentKey)
+                channelClient.addMembers(listOf(userId)).enqueue { result ->
+                    if (result is io.getstream.result.Result.Success) {
+                        val channel: Channel = result.value
+                        Log.d("List Channel", "Channel created successfully: ${channel.name}")
+                    } else {
+                        Log.d("List Channel", "Channel creation failed: ${result.isFailure}")
+                    }
+                }
+
                 ResultAction.Success(classResponse.toUiModel())
             } else {
                 val errorBody = response.errorBody()?.string() ?: "Lỗi không xác định"
-                Log.d("responsenewclass", "response: $errorBody")
                 when (response.code()) {
                     404 -> ResultAction.Error(InvalidEnrollmentKeyError("Mã đăng ký không hợp lệ"))
                     403 -> ResultAction.Error(AccessDeniedError("Bạn không có quyền tham gia lớp học này"))
@@ -195,6 +231,11 @@ class ClassRepository @Inject constructor(
         } catch (e: Exception) {
             ResultAction.Error(NetworkError("Lỗi kết nối: ${e.message}"))
         }
+    }
+
+    suspend fun updateClassAccessTime(classId: String) {
+        val currentTime = System.currentTimeMillis()
+        classCacheDao.updateLastAccessTime(classId, currentTime)
     }
 
     suspend fun getClassesOfTeacher(teacherId: String): List<ClassUiModel> {

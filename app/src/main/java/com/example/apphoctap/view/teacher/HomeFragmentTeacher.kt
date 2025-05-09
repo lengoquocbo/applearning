@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apphoctap.R
 import com.example.apphoctap.databinding.FragmentTeacherHomeBinding
 import com.example.apphoctap.utils.JwtUtils
 import com.example.apphoctap.utils.SessionManager
-import com.example.apphoctap.view.student.home.HomeViewModel
+import com.example.apphoctap.view.classdetail.ClassDetailFragment
 import com.example.apphoctap.view.teacher.Adapter.ClassAdapter
 import com.example.apphoctap.view.ui.teacher.AllClassFragment
 import com.example.apphoctap.view.viewmodel.teacher.HomeTeacherViewModel
@@ -61,7 +60,7 @@ class HomeFragmentTeacher : Fragment() {
             }
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_container, classDetailFragment)
+                .replace(R.id.frame_container_teacher, classDetailFragment)
                 .addToBackStack(null)
                 .commit()
 
@@ -88,14 +87,14 @@ class HomeFragmentTeacher : Fragment() {
         classViewModel.getClassesByTeacherID(teacherID)
         binding.tvAllClass.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_container, AllClassFragment())
+                .replace(R.id.frame_container_teacher, AllClassFragment())
                 .addToBackStack(null)
                 .commit()
         }
         // Sự kiện tạo lớp
         binding.btnCreateClass.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_container, CreateClassFragment())
+                .replace(R.id.frame_container_teacher, CreateClassFragment())
                 .addToBackStack(null)
                 .commit()
         }

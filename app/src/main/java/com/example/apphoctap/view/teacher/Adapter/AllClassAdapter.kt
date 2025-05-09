@@ -12,7 +12,7 @@ import com.example.apphoctap.database.entities.ClassCacheEntitiy
 
 class AllClassAdapter(
     private var classList: List<ClassCacheEntitiy>,
-    private val onItemClick: (ClassCacheEntitiy) -> Unit,
+    private val onItemClick: (ClassCacheEntitiy, ) -> Unit,
     private val onEditClick: (ClassCacheEntitiy) -> Unit,
     private val onDeleteClick: (ClassCacheEntitiy) -> Unit
 ) : RecyclerView.Adapter<AllClassAdapter.AllClassViewHolder>() {

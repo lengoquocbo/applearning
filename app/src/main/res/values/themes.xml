@@ -3,6 +3,7 @@
     <style name="RoundedPopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:popupBackground">@drawable/rounded_popup_background</item>
     </style>
+
     <style name="Base.Theme.Apphoctap" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
@@ -16,7 +17,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.App.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="Theme.Apphoctap.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Apphoctap.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

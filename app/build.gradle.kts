@@ -6,6 +6,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "2.1.0"
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -42,6 +43,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 
     ksp {
@@ -69,6 +71,18 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.volley)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.hilt.android)
@@ -81,18 +95,23 @@ dependencies {
     implementation(libs.circleimageview)
     implementation(libs.androidx.viewpager2)
 
-    implementation(libs.glide) // Thêm Glide vào dependencies
-//    annotationProcessor(libs.compiler)
 
-//    implementation ("io.getstream:stream-chat-android-client:5.11.10")
-//
-//    // UI Components từ Stream Chat SDK
-//    implementation ("io.getstream:stream-chat-android-ui-components:5.11.10")
-//    // Stream Video SDK (View-based)
-//    implementation(libs.stream.video.android.ui)
-//
-//    // Stream Video SDK - Core client
-//    implementation(libs.getstream.stream.video.android.core)
+    implementation(libs.glide) // Thêm Glide vào dependencies
+
+
+    // UI Components từ Stream Chat SDK
+    implementation (libs.stream.chat.android.client)
+    implementation (libs.stream.chat.android.state)
+    implementation (libs.stream.chat.android.offline)
+    implementation (libs.stream.chat.android.compose)
+
+    // Stream Video SDK - Core client
+    implementation(libs.getstream.stream.video.android.core)
+
+
+    implementation(libs.shimmer)
+    implementation(libs.lottie)
+
 
 }
 

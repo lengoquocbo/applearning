@@ -81,7 +81,7 @@ class AuthInterceptorHilt @Inject constructor(context: Context) : Interceptor {
                     // Lưu token mới và role
                     sessionManager.updateTokens(loginResponse.token, loginResponse.refreshToken)
 
-                    Pair(loginResponse.token, loginResponse.role)
+                    Pair(loginResponse.token, loginResponse.refreshToken)
                 } else {
                     null
                 }

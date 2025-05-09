@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
         loadClasses()
     }
 
-    private fun loadClasses() {
+    fun loadClasses() {
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 _classes.value = UiState.Loading
@@ -43,5 +43,12 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    fun onClassClicked(classId: String) {
+        viewModelScope.launch {
+            classRepository.updateClassAccessTime(classId)
+        }
+    }
+
 
 }
