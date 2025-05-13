@@ -1,5 +1,6 @@
 package com.example.apphoctap.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy
 import com.example.apphoctap.database.entities.DeckEntity
@@ -9,17 +10,18 @@ interface DeckDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDeck(deck: DeckEntity): Long
 
-    @Update
-    suspend fun updateDeck(deck: DeckEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDeckRoom(decks: List<DeckEntity>)
 
-    @Query("SELECT * FROM deck")
-    suspend fun getAllDecks(): List<DeckEntity>
+    @Query("SELECT * FROM deck WHERE userID = :userId ORDER BY dateCreated DESC")
+    fun getAllDecks(userId: String): LiveData<List<DeckEntity>>
 
-    @Query("SELECT * FROM deck WHERE isSynced = 0")
-    suspend fun getUnsyncedDecks(): List<DeckEntity>
 
     @Query("SELECT * FROM deck WHERE deckId = :deckId")
-    suspend fun getDeckById(deckId: Int): DeckEntity?
+    fun getDeckById(deckId: Long): LiveData<DeckEntity?>
+
+    @Update
+    suspend fun updateDeck(deck: DeckEntity)
 
     @Delete
     suspend fun deleteDeck(deck: DeckEntity)

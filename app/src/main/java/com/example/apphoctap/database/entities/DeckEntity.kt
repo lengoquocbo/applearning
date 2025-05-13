@@ -1,14 +1,23 @@
 package com.example.apphoctap.database.entities
 
 import androidx.room.*
+import com.example.apphoctap.model.DeckResponse
 
 @Entity(tableName = "deck")
 data class DeckEntity(
-    @PrimaryKey
-    val deckId: Int,
+    @PrimaryKey(autoGenerate = true)
+    val deckId: Int = 0, // Mặc định để không cần truyền
     val name: String,
-    val dateCreated: Long,
-    val lastSyncTime: Long, // Thời gian đồng bộ lần cuối
-    val isSynced: Boolean = true // Đã đồng bộ với server hay chưa
+    val userId: String,
+    val dateCreated: Long
 )
 
+
+fun DeckResponse.toDeckEntity(): DeckEntity {
+    return DeckEntity(
+        deckId = this.deckID,
+        name = this.name,
+        dateCreated = this.dateCreate,
+        userId = this.userID
+    )
+}

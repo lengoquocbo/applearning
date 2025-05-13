@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
-    id("kotlin-kapt")
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")  // Đảm bảo KAPT được sử dụng cho Hilt
+    id("com.google.devtools.ksp")  // KSP vẫn được sử dụng cho Room
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "2.1.0"
     alias(libs.plugins.kotlin.compose)
@@ -29,6 +29,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -85,8 +86,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.androidx.room.compiler)
 
+
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)  // Sử dụng KAPT cho Hilt
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -113,6 +115,6 @@ dependencies {
     implementation(libs.lottie)
 
 
-}
 
+}
 

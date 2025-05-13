@@ -8,7 +8,7 @@ import com.example.apphoctap.databinding.ActivityTeacherBinding
 import com.example.apphoctap.R
 import com.example.apphoctap.view.ProfileNavigator
 import com.example.apphoctap.view.chat.ChannelListFragment
-import com.example.apphoctap.view.student.document.DocumentFragment
+import com.example.apphoctap.view.document.DocumentFragment
 import com.example.apphoctap.view.ui.teacher.AllClassFragment
 import dagger.hilt.android.AndroidEntryPoint
 

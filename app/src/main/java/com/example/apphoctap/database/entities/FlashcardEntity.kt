@@ -14,13 +14,14 @@ import androidx.room.*
     ],
     indices = [Index("deckId")]
 )
+
 data class FlashcardEntity(
     @PrimaryKey(autoGenerate = true)
-    val localId: Long = 0, // ID cho Room database
     val flashcardId: Int?, // ID từ server, có thể null nếu chưa đồng bộ
     val deckId: Int,
     val frontText: String,
     val backText: String,
-    val lastModified: Long, // Thời gian sửa đổi gần nhất
-    val isSynced: Boolean = true // Đã đồng bộ với server hay chưa
+    val frontColor: String = "#FFFFFF", // Default white color
+    val backColor: String = "#FFFFFF"   // Default white color
 )
+

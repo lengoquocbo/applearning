@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NodeJsRetrofitClient {
 
-    private const val BASE_URL = "http://192.168.34.100:3000/"  // IP LAN hoặc domain của Node.js server
+    private const val BASE_URL = "http://192.168.42.111:3000/"  // IP LAN hoặc domain của Node.js server
 
     val apiService: NodeJsApiService by lazy {
         Retrofit.Builder()

@@ -56,7 +56,19 @@
     <string name="tab_discussions">Chat</string>
     <string name="tab_video_calls">Video Call</string>
     <string name="tab_materials">Tài liệu</string>
-    <string name="apiKey">5q6ebvvwua3p</string>
     <string name="title_activity_message">MessageActivity</string>
     <string name="title_activity_message_teacher">MessageTeacherActivity</string>
+
+    <string name="apiKey">5q6ebvvwua3p</string>
+    <string name="select_color">Chọn màu</string>
+    <string name="select_card_color">Chọn màu cho thẻ</string>
+    <string name="cancel">Hủy</string>
+    <string name="create_flashcard">Tạo thẻ ghi nhớ</string>
+    <string name="front_preview">Xem trước mặt trước</string>
+    <string name="back_preview">Xem trước mặt sau</string>
+    <string name="create_new_deck">Tạo bộ thẻ mới</string>
+    <string name="deck_name_hint">Tên bộ thẻ</string>
+    <string name="create">Tạo</string>
+    <string name="deck_created">Đã tạo bộ thẻ mới</string>
+    <string name="deck_name_required">Vui lòng nhập tên bộ thẻ</string>
 </resources>

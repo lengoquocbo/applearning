@@ -24,6 +24,7 @@ interface ClassApi {
 
     @GET("class/get")
     suspend fun getAllClass(): Response<List<ExposedClass>>
+
     @GET("class/teacher/{teacherID}")
     suspend fun getClassesByTeacherID(@Path("teacherID") teacherID: String): Response<List<ClassResponse>>
 
