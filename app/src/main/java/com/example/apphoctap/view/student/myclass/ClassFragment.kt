@@ -48,7 +48,7 @@ class ClassFragment : Fragment() {
         //Set up RecyclerView
         classAdapter = ClassAdapter(
             classList = emptyList(),
-            onClick = {item->
+            onClick = { item->
                 viewModel.onClassClicked(item.classId)
                 val myClassDetailFragment = ClassDetailFragment().apply {
                     arguments = bundleOf(
@@ -75,14 +75,10 @@ class ClassFragment : Fragment() {
         observeViewModel()
 
         Log.d("DEBUG", "binding.buttonJoinCourse: ${binding.buttonJoinCourse}")
-
-
         //Gọi hàm xử lý nút
         setUpUI()
-
         //Gọi hàm quan sát hành động tham gia lớp học
         observeViewModelJoinClass()
-
         observedeleteViewModel()
     }
 

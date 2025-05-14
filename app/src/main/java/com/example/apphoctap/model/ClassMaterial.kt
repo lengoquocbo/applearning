@@ -1,0 +1,11 @@
+package com.example.apphoctap.model
+
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class ClassMaterial(
+    val fileName : String,
+    val dateCreated : String,
+    val filePath : String
+) : Parcelable

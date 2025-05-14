@@ -8,6 +8,7 @@ import io.getstream.video.android.core.GEO
 import io.getstream.video.android.core.StreamVideo
 import io.getstream.video.android.core.StreamVideoBuilder
 import io.getstream.video.android.model.User
+import io.getstream.video.android.model.UserType
 
 @HiltAndroidApp
 class MyApp : Application(){
@@ -22,6 +23,7 @@ class MyApp : Application(){
 
     fun getRequestQueue(): RequestQueue = queue
     // Hàm bạn gọi sau khi login thành công
+
     fun initStreamVideo(user : User, token: String) {
         streamVideo = StreamVideoBuilder(
             context = this,

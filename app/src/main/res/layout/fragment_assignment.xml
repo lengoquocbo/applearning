@@ -19,6 +19,18 @@
         tools:layout_editor_absoluteY="0dp"
         tools:listitem="@layout/item_assignment" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddAssignment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Tạo bài tập"
+        android:src="@drawable/ic_add_class"
+        android:tint="@android:color/white"
+        app:backgroundTint="@color/background_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="24dp" />
+
     <LinearLayout
         android:id="@+id/layoutEmptyAssignments"
         android:layout_width="match_parent"

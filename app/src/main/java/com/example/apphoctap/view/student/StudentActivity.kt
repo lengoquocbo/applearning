@@ -62,6 +62,10 @@ class StudentActivity : AppCompatActivity(), ProfileNavigator {
             .commit()
     }
 
+    fun loadAllClassFragment() {
+        binding.bottomNavigation.selectedItemId = R.id.navigation_class
+    }
+
     override fun openProfile() {
         binding.bottomNavigation.selectedItemId = R.id.navigation_profile
     }

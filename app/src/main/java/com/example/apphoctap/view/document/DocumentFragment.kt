@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.apphoctap.databinding.FragmentCreateDocumentBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DocumentFragment : Fragment() {
     private var _binding : FragmentCreateDocumentBinding? = null
     private val binding get() = _binding!!

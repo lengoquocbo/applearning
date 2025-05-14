@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.apphoctap.utils.SessionManager
 import com.example.apphoctap.view.classdetail.ClassDetailFragment
+import com.example.apphoctap.view.student.StudentActivity
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -132,6 +133,10 @@ class HomeFragment : Fragment() {
 
         //quan sát dữ liệu
         observeViewModel()
+
+        binding.tvSeeAllNearby.setOnClickListener({
+            (activity as StudentActivity).loadAllClassFragment()
+        })
     }
 
     //quan sát dữ liệu class
@@ -152,6 +157,7 @@ class HomeFragment : Fragment() {
                         } else {
                             binding.layoutEmptyCourses.visibility = View.GONE
                             binding.rvNearbyClasses.visibility = View.VISIBLE
+                            adapter.updateList(classes)
                         }
                     }
                 }

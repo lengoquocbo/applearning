@@ -1,14 +1,13 @@
 package com.example.apphoctap.di
 
 import android.content.Context
-import com.example.apphoctap.database.entities.FlashcardEntity
-import com.example.apphoctap.network.AuthInterceptor
 import com.example.apphoctap.network.AuthInterceptorHilt
 import com.example.apphoctap.network.api.AssignmentApi
 import com.example.apphoctap.network.api.AuthApi
 import com.example.apphoctap.network.api.ClassStudentApi
 import com.example.apphoctap.network.api.ClassApi
 import com.example.apphoctap.network.api.DeckApi
+import com.example.apphoctap.network.api.FileApi
 import com.example.apphoctap.network.api.FlashCardApi
 import com.example.apphoctap.network.api.MessageApi
 import com.example.apphoctap.network.api.StudentApi
@@ -183,7 +182,9 @@ object NetworkModule {
     fun provideDeckApiService(@Named("AuthRetrofit") retrofit: Retrofit): DeckApi=
         retrofit.create(DeckApi::class.java)
 
-
-
+    @Provides
+    @Singleton
+    fun provideFileApiService(@Named("AuthRetrofit") retrofit: Retrofit): FileApi =
+        retrofit.create(FileApi::class.java)
 }
 

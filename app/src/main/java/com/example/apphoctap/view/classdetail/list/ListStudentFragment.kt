@@ -57,6 +57,7 @@ class ListStudentFragment : Fragment() {
             Toast.makeText(requireContext(), "Lỗi: classID không tồn tại", Toast.LENGTH_SHORT).show()
             return
         }
+        Log.d("class ID", "class Id $classID")
 
         // Hiển thị hoặc ẩn nút thêm học sinh dựa vào role
         if (role == "TEACHER") {

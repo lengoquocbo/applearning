@@ -49,8 +49,8 @@
 
         <ImageButton
             android:id="@+id/btnDocumentOptions"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Tùy chọn"
             android:src="@drawable/ic_more"

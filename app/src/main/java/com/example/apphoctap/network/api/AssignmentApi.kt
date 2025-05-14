@@ -1,6 +1,9 @@
 package com.example.apphoctap.network.api
 
 import com.example.apphoctap.model.Assignment
+import com.example.apphoctap.model.AssignmentRequest
+import com.example.apphoctap.model.AssignmentResponse
+import com.example.apphoctap.model.AssignmentSubmission
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -12,19 +15,34 @@ import retrofit2.http.Query
 
 interface AssignmentApi {
 
+    @POST("assignments/create")
+    suspend fun createAssignment(@Body request: AssignmentRequest): Response<AssignmentResponseMini>
+
+    @GET("assignments/{classId}")
+    suspend fun getAssignmentsbyClassId(@Path("classId") classId: String): Response<List<AssignmentSubmission>>
+
     @GET("/assignments/")
     suspend fun getAllAssingment() : List<Assignment>
 
     @GET("/assignments/")
     suspend fun getAssignmentByClassId(@Query("classId") ClassId : String) : Response<List<Assignment>>
 
-    @POST("/assignments/")
-    suspend fun createAssignment(@Body assignment: Assignment) : Response<Assignment>
 
     @PUT("/assignments/{id}/")
     suspend fun updateAssignment(@Path("id") assignmentId : Int, @Body assignment: Assignment) : Response<Assignment>
 
-    @DELETE("/assignments/{id}/")
-    suspend fun deleteAssignment(@Path("id") assignmentId : Int) : Response<Unit>
+    @DELETE("/assignments/{id}")
+    suspend fun deleteAssignment(@Path("id") assignmentId : Int) : Response<DeleteResponse>
 
 }
+
+data class DeleteResponse(
+    val message: String,
+    val success: Boolean,
+)
+data class AssignmentResponseMini(
+    val message: String,
+    val success: Boolean,
+)
+
+

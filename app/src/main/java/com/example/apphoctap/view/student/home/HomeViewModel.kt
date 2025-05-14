@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 _classes.value = UiState.Loading
-                delay(1500)
+                delay(500)
             }
             try {
                 val result = classRepository.getNearbyAccessClasses()
