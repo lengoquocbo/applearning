@@ -221,7 +221,7 @@
                             android:textColor="#4EB727" />
 
                         <TextView
-                            android:id="@+id/numclass"
+                            android:id="@+id/sumclass"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="12"
@@ -248,7 +248,7 @@
                             android:textColor="#2196F3" />
 
                         <TextView
-                            android:id="@+id/numstudent"
+                            android:id="@+id/sumstudent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="240"

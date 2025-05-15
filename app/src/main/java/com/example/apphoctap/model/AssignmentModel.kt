@@ -49,3 +49,10 @@ data class FileItem(
     val createAt : String,
     val filePath : String
 )
+
+@Parcelize
+data class UpdateAssignmentRequest(
+    val title : String,
+    val description : String,
+    val dueDate: String
+) : Parcelable

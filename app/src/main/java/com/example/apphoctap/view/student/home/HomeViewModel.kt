@@ -1,5 +1,6 @@
 package com.example.apphoctap.view.student.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,10 +30,11 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 _classes.value = UiState.Loading
-                delay(500)
+                delay(200)
             }
             try {
                 val result = classRepository.getNearbyAccessClasses()
+                Log.d("DEBUG Home", "loadClasses: $result")
                 withContext(Dispatchers.Main){
                     _classes.value = UiState.Success(result)
                 }

@@ -58,17 +58,20 @@ class ClassRepository @Inject constructor(
     // Chuyển từ ClassResponse sang ClassCacheEntity
     private fun ClassResponse.toCacheEntity(): ClassCacheEntitiy {
         return ClassCacheEntitiy(
+            userId = sessionManager.getUserId()!!,
             classId = classID,
             className = className,
             teacherName = teacherName,
             description = description,
             enrollmentKey = enrollmentKey,
-            lastSyncTime = System.currentTimeMillis()
+            lastSyncTime = System.currentTimeMillis(),
+            lastAccessTime = System.currentTimeMillis()
         )
     }
 
     private fun ClassResponse.toCacheEntityWhenCreate(): ClassCacheEntitiy {
         return ClassCacheEntitiy(
+            userId = sessionManager.getUserId()!!,
             classId = classID,
             className = className,
             teacherName = teacherName,
@@ -80,7 +83,7 @@ class ClassRepository @Inject constructor(
     }
 
     suspend fun getNearbyAccessClasses() : List<ClassUiModel>{
-        val cachedClasses = classCacheDao.getRecentlyAccessedClasses()
+        val cachedClasses = classCacheDao.getRecentlyAccessedClasses(sessionManager.getUserId()!!)
         return cachedClasses.map { it.toUiModel() }
     }
 
@@ -123,6 +126,7 @@ class ClassRepository @Inject constructor(
                 classCacheDao.insertClasses(
                     classesFromApi.map { it.toCacheEntity() }
                 )
+
 
                 classesFromApi.map { it.toUiModel() }
             } else {
@@ -236,6 +240,7 @@ class ClassRepository @Inject constructor(
     suspend fun updateClassAccessTime(classId: String) {
         val currentTime = System.currentTimeMillis()
         classCacheDao.updateLastAccessTime(classId, currentTime)
+
     }
 
     suspend fun getClassesOfTeacher(teacherId: String): List<ClassUiModel> {

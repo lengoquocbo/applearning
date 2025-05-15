@@ -6,9 +6,11 @@ import com.example.apphoctap.model.AssignmentResponse
 import com.example.apphoctap.model.AssignmentSubmission
 import com.example.apphoctap.model.AttachmentItem
 import com.example.apphoctap.model.SubmitRequest
+import com.example.apphoctap.model.UpdateAssignmentRequest
 import com.example.apphoctap.network.api.AssignmentApi
 import com.example.apphoctap.network.api.DeleteResponse
 import com.example.apphoctap.network.api.SubmissionApi
+import com.example.apphoctap.network.api.UpdateResponse
 import com.example.apphoctap.utils.FileUploader
 import com.example.apphoctap.utils.ResultAssignment
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +22,8 @@ import javax.inject.Inject
 class AssignmentRepository @Inject constructor(
     private val assignmentApi: AssignmentApi,
 ) {
+
+
 
     suspend fun createAssignment(assignmentRequest: AssignmentRequest): ResultAssignment<String> {
         return withContext(Dispatchers.IO) {
@@ -62,6 +66,25 @@ class AssignmentRepository @Inject constructor(
                 }
             } catch (e: Exception) {
                 ResultAssignment.Error("Exception while deleting assignment: ${e.message}")
+            }
+        }
+    }
+
+    suspend fun updateAssignment(assignmentId : Int, updateAssignmentRequest: UpdateAssignmentRequest) : ResultAssignment<UpdateResponse> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = assignmentApi.updateAssignment(assignmentId, updateAssignmentRequest)
+
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        ResultAssignment.Success(it)
+                    } ?: ResultAssignment.Error("Response body is null")
+                } else {
+                    val errorBody = response.errorBody()?.string() ?: "Unknown error"
+                    ResultAssignment.Error("Failed to update assignment: $errorBody")
+                }
+            } catch (e: Exception) {
+                ResultAssignment.Error("Exception while updating assignment: ${e.message}")
             }
         }
     }

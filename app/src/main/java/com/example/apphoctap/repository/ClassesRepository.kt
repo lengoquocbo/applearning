@@ -5,6 +5,7 @@ import com.example.apphoctap.model.ClassResponse
 import com.example.apphoctap.model.CreateClassResponse
 import com.example.apphoctap.model.EnrollmentKeyRessponse
 import com.example.apphoctap.model.StudentResponse
+import com.example.apphoctap.model.SumClassAndStudent
 import com.example.apphoctap.network.api.ClassApi
 import retrofit2.Response
 
@@ -24,4 +25,7 @@ class ClassesRepository(
     suspend fun getStudentByclassID(classID: String): Response<List<StudentResponse>> {
         return classesApi.getStudentByclassID(classID)
     }
+
+    suspend fun getSumClassesByTeacherID(teacherId: String): Response<SumClassAndStudent> =
+        classesApi.getSumClassesByTeacherID(teacherId)
 }

@@ -6,6 +6,7 @@ import androidx.room.*
 data class ClassCacheEntitiy(
     @PrimaryKey
     val classId: String,
+    val userId : String,
     val className: String,
     val teacherName: String,
     val description: String,

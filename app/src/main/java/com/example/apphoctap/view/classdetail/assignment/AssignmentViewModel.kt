@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.apphoctap.model.AssignmentRequest
 import com.example.apphoctap.model.AssignmentSubmission
 import com.example.apphoctap.model.SubmitRequest
+import com.example.apphoctap.model.UpdateAssignmentRequest
 import com.example.apphoctap.network.api.DeleteResponse
+import com.example.apphoctap.network.api.UpdateResponse
 import com.example.apphoctap.repository.AssignmentRepository
 import com.example.apphoctap.repository.FileRepository
 import com.example.apphoctap.repository.SubmissionRepository
@@ -50,6 +52,22 @@ class AssignmentViewModel @Inject constructor(
     private val _deleteAssignmentResult = MutableLiveData<ResultAssignment<DeleteResponse>>()
     val deleteAssignmentResult: LiveData<ResultAssignment<DeleteResponse>> = _deleteAssignmentResult
 
+    private val _updateAssignment = MutableLiveData<ResultAssignment<UpdateResponse>>()
+    val updateAssignment: LiveData<ResultAssignment<UpdateResponse>> = _updateAssignment
+
+    fun updateAssignment(assignmentId : Int, title: String, description: String, dueDate: String) {
+        viewModelScope.launch {
+            val updateAssignmentRequest = UpdateAssignmentRequest(
+                title,
+                description,
+                dueDate
+            )
+            _updateAssignment.value = ResultAssignment.Loading
+            val result = assignmentRepository.updateAssignment(assignmentId, updateAssignmentRequest)
+            _updateAssignment.value = result
+        }
+    }
+
     fun deleteAssignment(assignmentId: Int) {
         viewModelScope.launch {
             _deleteAssignmentResult.value = ResultAssignment.Loading
@@ -57,7 +75,6 @@ class AssignmentViewModel @Inject constructor(
             _deleteAssignmentResult.value = result
         }
     }
-
 
     fun uploadFilesAndSubmitAssignment(
         uris: List<Uri>,
@@ -159,11 +176,13 @@ class AssignmentViewModel @Inject constructor(
                             is ResultAssignment.Success -> {
                                 // Xử lý khi thành công, result.data đã chứa message từ server
                                 val message = result.data
+                                _assignmentState.value = AssignmentState.Created(result.data)
 
                             }
                             is ResultAssignment.Error -> {
                                 // Xử lý khi có lỗi
                                 val errorMsg = result.message
+                                _assignmentState.value = AssignmentState.Error(errorMsg)
                             }
                             is ResultAssignment.Loading -> {
                                 // Thông thường không cần xử lý ở đây vì Loading đã được xử lý trước khi gọi repository

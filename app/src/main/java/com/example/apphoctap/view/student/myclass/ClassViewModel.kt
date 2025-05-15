@@ -54,7 +54,7 @@ class ClassViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 _classes.value = UiState.Loading
-                delay(500)
+                delay(200)
             }
             try {
                 val result = classRepository.getClasses()

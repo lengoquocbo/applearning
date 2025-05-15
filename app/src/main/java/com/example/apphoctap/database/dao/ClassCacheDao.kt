@@ -24,8 +24,8 @@ interface ClassCacheDao {
     @Query("SELECT * FROM class_cache WHERE enrollmentKey = :enrollmentKey")
     suspend fun getClassByEnrollmentKey(enrollmentKey: String): ClassCacheEntitiy?
 
-    @Query("SELECT * FROM class_cache ORDER BY lastAccessTime DESC LIMIT :limit")
-    suspend fun getRecentlyAccessedClasses(limit: Int = 10): List<ClassCacheEntitiy>
+    @Query("SELECT * FROM class_cache WHERE userId = :userId ORDER BY lastAccessTime DESC LIMIT :limit")
+    suspend fun getRecentlyAccessedClasses(userId : String, limit: Int = 10): List<ClassCacheEntitiy>
 
     @Query("DELETE FROM class_cache WHERE classId IN (:classIds)")
     suspend fun deleteClassesByIds(classIds: List<String>)

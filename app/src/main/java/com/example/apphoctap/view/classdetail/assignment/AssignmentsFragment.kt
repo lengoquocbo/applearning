@@ -1,7 +1,6 @@
 package com.example.apphoctap.view.classdetail.assignment
 
 import android.app.AlertDialog
-import android .app.DownloadManager
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -34,7 +33,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
 
 @AndroidEntryPoint
-class AssignmentsFragment : Fragment(), AddAssignmentDialogFragment.OnCreateAssignmentListener, AddSubmissionDialogFragment.OnCreateSubmissionListener {
+class AssignmentsFragment : Fragment(),
+    AddAssignmentDialogFragment.OnCreateAssignmentListener,
+    AddSubmissionDialogFragment.OnCreateSubmissionListener,
+    EditAssignmentDialogFragment.onEditAssignmentListener
+{
 
     private var _binding: FragmentAssignmentBinding? = null
     private val binding get() = _binding!!
@@ -86,16 +89,16 @@ class AssignmentsFragment : Fragment(), AddAssignmentDialogFragment.OnCreateAssi
         assignmentAdapter = AssignmentAdapter(
             assignmentList = emptyList(),
             onEdit = { assignment ->
-                EditAssignment(assignment)
+                editAssignment(assignment)
             },
             onDelete = { assignment ->
-                DeleteAssignment(assignment)
+                deleteAssignment(assignment)
             },
             onFileAttachClick = { file ->
                 fileAttachClick(file)
             },
             onSubmissionClick = { assignment ->
-                SubmitAssignment(assignment)
+                submitAssignment(assignment)
 
             },
             onClickListener = { assignment ->
@@ -118,28 +121,23 @@ class AssignmentsFragment : Fragment(), AddAssignmentDialogFragment.OnCreateAssi
     }
 
 
-    fun fileAttachClick(file: AttachmentResponse){
+    private fun fileAttachClick(file: AttachmentResponse){
         viewModel.fetchDownloadUrl(file.id, file.fileName)
     }
 
     private fun downloadFile(context: Context, url: String, fileName: String) {
-        val request = DownloadManager.Request(Uri.parse(url))
+        val request = android.app.DownloadManager.Request(Uri.parse(url))
             .setTitle(fileName)
             .setDescription("Đang tải xuống...")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setNotificationVisibility(android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
 
-        val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as android.app.DownloadManager
         dm.enqueue(request)
         Toast.makeText(requireContext(), "File $fileName downloaded", Toast.LENGTH_SHORT).show()
     }
 
-    fun EditAssignment(assignment: AssignmentSubmission) {
-
-    }
-
-
-    fun DeleteAssignment(assignment: AssignmentSubmission) {
+    private fun deleteAssignment(assignment: AssignmentSubmission) {
         showDeleteConfirmationDialog(assignment)
     }
 
@@ -166,7 +164,13 @@ class AssignmentsFragment : Fragment(), AddAssignmentDialogFragment.OnCreateAssi
         dialog.show()
     }
 
-    fun SubmitAssignment(assignment: AssignmentSubmission) {
+    private fun editAssignment(assignment: AssignmentSubmission) {
+        val dialog = EditAssignmentDialogFragment.newInstance(assignment)
+        dialog.show(childFragmentManager, "EditAssignmentDiaLog")
+    }
+
+
+    private fun submitAssignment(assignment: AssignmentSubmission) {
         val dialog = AddSubmissionDialogFragment.newInstance(assignment)
         dialog.show(childFragmentManager, "AddAssignmentDialog")
     }
@@ -204,17 +208,23 @@ class AssignmentsFragment : Fragment(), AddAssignmentDialogFragment.OnCreateAssi
         val uris = attachments.map { it.fileUri }
 
         viewModel.uploadFilesAndCreateAssignment(uris, classID, title, description, dueDate)
-        loadAssignments()
     }
 
     override fun onSubmissionCreated(assignment: AssignmentSubmission, attachments: List<AttachmentItem>) {
         val uris = attachments.map { it.fileUri }
         viewModel.uploadFilesAndSubmitAssignment(uris, assignment, classID)
-        loadAssignments()
     }
 
+    override fun onEditAssignmnetListener(
+        title: String,
+        description: String,
+        dueDate: String,
+        assignmentSubmission: AssignmentSubmission
+    ) {
+        viewModel.updateAssignment(assignmentSubmission.id, title, description, dueDate)
+    }
 
-    fun observeViewModel(){
+    private fun observeViewModel(){
         viewModel.uploadState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UploadState.Loading -> {
@@ -232,6 +242,27 @@ class AssignmentsFragment : Fragment(), AddAssignmentDialogFragment.OnCreateAssi
                     showErrorMessage("Upload không thành công")
                 }
                 else -> {}
+            }
+        }
+
+        viewModel.updateAssignment.observe(viewLifecycleOwner){ state ->
+            when (state) {
+                is ResultAssignment.Loading -> {
+                    // Hiển thị loading state
+                    showLoading(true)
+                }
+                is ResultAssignment.Success -> {
+                    // Ẩn loading và hiển thị thông báo thành công
+                    showLoading(false)
+                    showSuccessMessage("Cập nhật bài tập thành công")
+                    // Refresh dữ liệu hoặc cập nhật UI
+                    loadAssignments()
+                }
+                is ResultAssignment.Error -> {
+                    // Ẩn loading và hiển thị thông báo lỗi
+                    showLoading(false)
+                    showErrorMessage(state.message)
+                }
             }
         }
 
@@ -355,6 +386,8 @@ class AssignmentsFragment : Fragment(), AddAssignmentDialogFragment.OnCreateAssi
         // Hiển thị thông báo lỗi bằng Snackbar hoặc Toast
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
+
+
 }
 
 

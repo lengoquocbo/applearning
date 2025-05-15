@@ -96,7 +96,6 @@ class ClassFragment : Fragment() {
 
             // Gọi ViewModel để xử lý tham gia lớp học
             viewModel.joinClass(enrollmentKey)
-            viewModel.loadClasses()
         }
 
         // Thiết lập sự kiện xóa lỗi khi người dùng nhập text
@@ -133,6 +132,7 @@ class ClassFragment : Fragment() {
                 // Tham gia thành công
                 binding.progressBar.isVisible = false
                 binding.buttonJoinCourse.isEnabled = true
+                binding.editTextCourseCode.text?.clear()
 
                 // Hiển thị thông báo thành công
                 Snackbar.make(
@@ -183,6 +183,7 @@ class ClassFragment : Fragment() {
                         Snackbar.LENGTH_SHORT
                     ).show()
                     // Cập nhật danh sách lớp học nếu cần
+                    viewModel.loadClasses()
 
                 }
                 is LeaveClassState.Error -> {

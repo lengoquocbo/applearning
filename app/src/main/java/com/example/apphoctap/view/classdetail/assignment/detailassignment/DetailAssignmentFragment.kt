@@ -48,16 +48,12 @@ class DetailAssignmentFragment : Fragment() {
         sharedViewModel.selectedAssignment.observeForever { assignment ->
             if (assignment != null) {
                 assignmentsave = assignment
-                Log.d("DetailAssignmentFragment", "assignment: $assignment")
                 viewModel.getDetailAssignment(assignment.id)
-                Log.d("DetailAssignmentFragment", "------------${viewModel.assignmentDetail.value}")
-                setUpUI()
-                observeViewModel()
             } else Log.e("Error", "assignment is null")
         }
+        setUpUI()
+        observeViewModel()
     }
-
-
 
     private fun setUpUI() {
         detailAssignmentAdapter = DetailAssignmentAdapter(
@@ -69,13 +65,6 @@ class DetailAssignmentFragment : Fragment() {
                 SendFeedBack(submission)
             }
         )
-
-
-        viewModel.downloadUrl.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { (url, name) ->
-                downloadFile(requireContext(), url, name)
-            }
-        }
 
         binding.recyclerViewSubmissions.adapter = detailAssignmentAdapter
         binding.recyclerViewSubmissions.layoutManager = LinearLayoutManager(requireContext())
@@ -135,6 +124,13 @@ class DetailAssignmentFragment : Fragment() {
                     binding.recyclerViewSubmissions.visibility = View.GONE
 
                     Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
+            viewModel.downloadUrl.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let { (url, name) ->
+                    downloadFile(requireContext(), url, name)
                 }
             }
         }

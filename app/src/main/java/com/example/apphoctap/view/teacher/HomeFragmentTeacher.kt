@@ -1,6 +1,7 @@
 package com.example.apphoctap.view.teacher
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,9 @@ import com.example.apphoctap.view.classdetail.ClassDetailFragment
 import com.example.apphoctap.view.teacher.Adapter.ClassAdapter
 import com.example.apphoctap.view.ui.teacher.AllClassFragment
 import com.example.apphoctap.view.viewmodel.teacher.HomeTeacherViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragmentTeacher : Fragment() {
 
     private var _binding: FragmentTeacherHomeBinding? = null
@@ -97,6 +100,25 @@ class HomeFragmentTeacher : Fragment() {
                 .replace(R.id.frame_container_teacher, CreateClassFragment())
                 .addToBackStack(null)
                 .commit()
+        }
+
+        classViewModel.sumClassAndStudent(teacherID)
+
+        // Quan sát kết quả
+        classViewModel.sum.observe(viewLifecycleOwner) { result ->
+            result?.let {
+                // Hiển thị kết quả
+                Log.d("ClassInfo", "Tổng lớp: ${it.sumClass}, Tổng học sinh: ${it.sumStudent}")
+                binding.sumclass.text = "${it.sumClass}"
+                binding.sumstudent.text = "${it.sumStudent}"
+            }
+        }
+
+        // Quan sát lỗi
+        classViewModel.error.observe(viewLifecycleOwner) { errorMsg ->
+            errorMsg?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

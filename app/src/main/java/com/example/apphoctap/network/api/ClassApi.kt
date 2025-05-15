@@ -6,6 +6,7 @@ import com.example.apphoctap.model.CreateClassResponse
 import com.example.apphoctap.model.EnrollmentKeyRessponse
 import com.example.apphoctap.model.ExposedClass
 import com.example.apphoctap.model.StudentResponse
+import com.example.apphoctap.model.SumClassAndStudent
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -16,6 +17,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ClassApi {
+
+    @GET("class/sum")
+    suspend fun getSumClassesByTeacherID(@Query("teacherId") teacherId: String): Response<SumClassAndStudent>
 
     @POST("class/create")
     suspend fun createClass(

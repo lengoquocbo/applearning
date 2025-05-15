@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#30FFFFFF">
-    <item>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF" />
+            <solid android:color="#D32F2F"/> <!-- Darker red khi nhấn -->
+            <corners android:radius="8dp"/>
         </shape>
     </item>
-</ripple>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#F44336"/> <!-- Màu đỏ -->
+            <corners android:radius="8dp"/>
+        </shape>
+    </item>
+</selector>

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apphoctap.database.entities.ClassCacheEntitiy
 import com.example.apphoctap.network.RetrofitInstance
+import com.example.apphoctap.utils.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import kotlinx.coroutines.launch
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllClassViewModel @Inject constructor(
-        private val chatClient: ChatClient
+    private val chatClient: ChatClient,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
     private val repository = RetrofitInstance.classRepository
 
@@ -31,6 +33,7 @@ class AllClassViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     val result = response.body()?.map {
                         ClassCacheEntitiy(
+                            userId = sessionManager.getUserId()!!,
                             classId = it.classID,
                             className = it.className,
                             description = it.description,

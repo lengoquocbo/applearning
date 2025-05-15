@@ -126,7 +126,7 @@ class HomeFragment : Fragment() {
         )
 
         binding.rvNearbyClasses.adapter = adapter
-        binding.rvNearbyClasses.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvNearbyClasses.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         //Load nearby class
         viewModel.loadClasses()

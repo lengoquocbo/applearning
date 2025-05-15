@@ -165,6 +165,10 @@ class ListStudentFragment : Fragment() {
         }
 
         dialog.show()
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     override fun onDestroyView() {
